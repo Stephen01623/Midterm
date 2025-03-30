@@ -29,14 +29,15 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = { "Register", "Login", "Exit" };
+                string[] options = [ "Register", "Login", "Exit" ];
                 int selectedIndex = 0;
 
+                
                 int boxWidth = banner.Split('\n')[1].Length + 4; 
                 int boxHeight = banner.Split('\n').Length + 6;  
                 int boxX = (consoleWidth - boxWidth) / 2;
                 int boxY = 3; 
-
+                
                 while (true)
                 {
                     Console.Clear();
