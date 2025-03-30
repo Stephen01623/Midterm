@@ -13,10 +13,14 @@ namespace Midterm
 {
     class user
     {
+
+        public static bool isLoggedIn = false; 
         public static Connection con = new Connection();
         public static bool conn = false;
-        public static void Register()
+        public static async void Register()
         {
+            //BinanceWebSocketClient client = new BinanceWebSocketClient();
+            //await client.StartAsync();
             Console.WriteLine("Register");
             Console.WriteLine("Enter your Email: ");
             string email = Console.ReadLine();
@@ -72,8 +76,10 @@ namespace Midterm
                    {
                         Midterm.Sendemail.Thank(email);
                         Console.WriteLine("Login Success");
+
                         //Dashboard of Cryptocurrency Exchange Rate
                            conn = true;
+                        isLoggedIn = true;
                        }
                    else
                    {

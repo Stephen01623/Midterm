@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using Console = Colorful.Console;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Midterm
 {
-    class Home
+     class ExchangerRateDashboard
     {
-        public async static Task MainHome()
+
+        public async static Task ExchangeDashboard()
         {
-            
+
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
+
             while (true)
             {
                 Console.Clear();
@@ -30,20 +36,20 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = [ "Register", "Login", "Exit" ];
+                string[] options = ["Spot", "Swap", "logout"];
                 int selectedIndex = 0;
 
-                
-                int boxWidth = banner.Split('\n')[1].Length + 4; 
-                int boxHeight = banner.Split('\n').Length + 6;  
+
+                int boxWidth = banner.Split('\n')[1].Length + 4;
+                int boxHeight = banner.Split('\n').Length + 6;
                 int boxX = (consoleWidth - boxWidth) / 2;
-                int boxY = 3; 
-                
+                int boxY = 3;
+
                 while (true)
                 {
                     Console.Clear();
 
-                    
+
                     Console.SetCursorPosition(boxX, boxY);
                     Console.Write("╔" + new string('═', boxWidth - 2) + "╗");
 
@@ -56,7 +62,7 @@ namespace Midterm
                     Console.SetCursorPosition(boxX, boxY + boxHeight - 1);
                     Console.Write("╚" + new string('═', boxWidth - 2) + "╝");
 
-                    
+
                     string[] bannerLines = banner.Split('\n');
                     int bannerStartY = boxY + 1;
                     for (int i = 0; i < bannerLines.Length; i++)
@@ -65,7 +71,7 @@ namespace Midterm
                         Console.Write(bannerLines[i], Color.Blue);
                     }
 
-                    
+
                     int menuStartY = bannerStartY + bannerLines.Length + 1;
                     for (int i = 0; i < options.Length; i++)
                     {
@@ -83,7 +89,7 @@ namespace Midterm
                         }
                     }
 
-                    
+
                     ConsoleKeyInfo key = Console.ReadKey(true);
                     switch (key.Key)
                     {
@@ -103,16 +109,16 @@ namespace Midterm
 
         public static async void ExecuteOption(int index)
         {
-            BinanceWebSocketClient client = new BinanceWebSocketClient();
+           
             Console.Clear();
             switch (index)
             {
                 case 0:
-                    Midterm.user.Register();
+                    Midterm.ExchangeCaller.Call();
                     break;
                 case 1:
                     Midterm.user.Login();
-                    break;            
+                    break;
                 case 2:
                     Console.WriteLine("Exiting...", Color.Red);
                     Environment.Exit(0);
@@ -121,15 +127,6 @@ namespace Midterm
 
             Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
             Console.ReadKey();
-            if (user.isLoggedIn)
-
-            {
-                Midterm.ExchangerRateDashboard.ExchangeDashboard();
-
-            } else
-            {
-                MainHome();
-            }
             
         }
     }

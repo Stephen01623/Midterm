@@ -4,7 +4,7 @@ namespace Midterm
 {
     class Program
     {
-        static void Main()
+        static async Task Main()
         {
             Midterm.Loading.ShowLoadingScreen();
         }
