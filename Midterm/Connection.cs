@@ -112,9 +112,39 @@ namespace Activity
                 return false;
             }
 
+
         }
-        
-        
+        public void InsertBalance(float balance, string email)
+        {
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    Console.WriteLine("Connected successfully!");
+                    string query = "UPDATE users SET balance = balance + @balance WHERE Email = @email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@balance", balance);
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+                Console.WriteLine("Balance Deposited Successfully!");
+                
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+            }
+
+
+        }
+
+
     }
 }
 
