@@ -56,6 +56,7 @@ class BinanceWebSocketClient
 
         try
         {
+           
             using (ClientWebSocket ws = new ClientWebSocket())
             {
                 await ws.ConnectAsync(new Uri(wsUrl), CancellationToken.None);
@@ -63,11 +64,12 @@ class BinanceWebSocketClient
 
                 byte[] buffer = new byte[4096];
                 int displayCount = 0;
+                bool exit = false;
                 while (ws.State == WebSocketState.Open)
                 {
 
 
-                    if (displayCount < 1000)
+                    if (displayCount < 300)
                     {
                         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                         string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
@@ -80,13 +82,21 @@ class BinanceWebSocketClient
                     else
 
                     {
+                        exit = true;
                         break;
-
-
+                       
                     }
 
 
+                    if (exit)
+                    {
+                        Console.Write("Press Any Key: ");
+                        Console.ReadKey();
+                         Midterm.ExchangerRateDashboard.ExchangeDashboard();
+                    }
+                    
                 }
+                
             }
         }
         catch (Exception e)

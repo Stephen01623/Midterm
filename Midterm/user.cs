@@ -21,7 +21,13 @@ namespace Midterm
         {
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
             //await client.StartAsync();
-            Console.WriteLine("Register");
+            Console.WriteLine(@"
+██████╗ ███████╗ ██████╗ ██╗███████╗████████╗███████╗██████╗ 
+██╔══██╗██╔════╝██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+██████╔╝█████╗  ██║  ███╗██║███████╗   ██║   █████╗  ██████╔╝
+██╔══██╗██╔══╝  ██║   ██║██║╚════██║   ██║   ██╔══╝  ██╔══██╗
+██║  ██║███████╗╚██████╔╝██║███████║   ██║   ███████╗██║  ██║
+╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝");
             Console.WriteLine("Enter your Email: ");
             string email = Console.ReadLine();
          
@@ -34,7 +40,7 @@ namespace Midterm
                 Console.WriteLine("Enter your username: ");
                 string username = Console.ReadLine(); 
                 Console.WriteLine("Enter your password: ");
-                string password = Console.ReadLine();
+                string password = Midterm.Password.ReadPassword();
                 Console.WriteLine("Enter your phone number: ");
                 string phone = Console.ReadLine();
                 Console.WriteLine("Enter your address: ");
@@ -63,7 +69,7 @@ namespace Midterm
             Console.WriteLine("Enter your email: ");
             string email = Console.ReadLine();
             Console.WriteLine("Enter your password: ");
-            string password = Console.ReadLine();
+            string password = Midterm.Password.ReadPassword();
             Midterm.Otp.SendOtp(email);
             bool conn = false;
             while (!conn)
