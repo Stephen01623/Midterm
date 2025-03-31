@@ -22,12 +22,12 @@ namespace Midterm
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
             //await client.StartAsync();
             Console.WriteLine(@"
-██████╗ ███████╗ ██████╗ ██╗███████╗████████╗███████╗██████╗ 
-██╔══██╗██╔════╝██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗
-██████╔╝█████╗  ██║  ███╗██║███████╗   ██║   █████╗  ██████╔╝
-██╔══██╗██╔══╝  ██║   ██║██║╚════██║   ██║   ██╔══╝  ██╔══██╗
-██║  ██║███████╗╚██████╔╝██║███████║   ██║   ███████╗██║  ██║
-╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝");
+                         ██████╗ ███████╗ ██████╗ ██╗███████╗████████╗███████╗██████╗ 
+                         ██╔══██╗██╔════╝██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+                         ██████╔╝█████╗  ██║  ███╗██║███████╗   ██║   █████╗  ██████╔╝
+                         ██╔══██╗██╔══╝  ██║   ██║██║╚════██║   ██║   ██╔══╝  ██╔══██╗
+                         ██║  ██║███████╗╚██████╔╝██║███████║   ██║   ███████╗██║  ██║
+                         ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝");
             Console.WriteLine("Enter your Email: ");
             string email = Console.ReadLine();
          
@@ -37,7 +37,10 @@ namespace Midterm
             }
             else
             {
-                Console.WriteLine("Enter your username: ");
+                Console.WriteLine(@"
+ ___      ___  ___  __           __   ___  __                   ___  
+|__  |\ |  |  |__  |__)    |  | /__` |__  |__) |\ |  /\   |\/| |__  .
+|___ | \|  |  |___ |  \    \__/ .__/ |___ |  \ | \| /~~\  |  | |___ .");
                 string username = Console.ReadLine(); 
                 Console.WriteLine("Enter your password: ");
                 string password = Midterm.Password.ReadPassword();
@@ -66,6 +69,14 @@ namespace Midterm
         public static void Login()
         {
             Connection con = new Connection();
+            Console.WriteLine(@" 
+
+                                            ██╗      ██████╗  ██████╗ ██╗███╗   ██╗
+                                            ██║     ██╔═══██╗██╔════╝ ██║████╗  ██║
+                                            ██║     ██║   ██║██║  ███╗██║██╔██╗ ██║
+                                            ██║     ██║   ██║██║   ██║██║██║╚██╗██║
+                                            ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║
+                                            ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝");
             Console.WriteLine("Enter your email: ");
             string email = Console.ReadLine();
             Console.WriteLine("Enter your password: ");
