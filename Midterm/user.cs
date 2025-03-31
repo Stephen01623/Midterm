@@ -8,7 +8,6 @@ using MySql.Data.MySqlClient;
 using System.Net;
 using System.Net.Mail;
 using System.Diagnostics.Eventing.Reader;
-using Org.BouncyCastle.Tls;
 
 namespace Midterm
 {
@@ -67,6 +66,7 @@ namespace Midterm
                 }
             }
         }
+
         public static void Login()
         {
             Connection con = new Connection();
@@ -85,40 +85,38 @@ namespace Midterm
             Midterm.Otp.SendOtp(email);
             bool conn = false;
             while (!conn)
-            { 
-                if (con.ValidateLogin(email, password)) 
-                { 
-                  Console.WriteLine("Enter your OTP: ");
-                  string otp = Console.ReadLine();
+            {
+                if (con.ValidateLogin(email, password))
+                {
+                    Console.WriteLine("Enter your OTP: ");
+                    string otp = Console.ReadLine();
                     //if(Midterm.Otp.VerifyOtp)
-                   if (Midterm.Otp.VerifyOtp(email, otp))
-                   {
+                    if (Midterm.Otp.VerifyOtp(email, otp))
+                    {
                         Midterm.Sendemail.Thank(email);
                         Console.WriteLine("Login Success");
 
                         //Dashboard of Cryptocurrency Exchange Rate
-                           conn = true;
+                        conn = true;
                         isLoggedIn = true;
-                       }
-                   else
-                   {
-                       Console.WriteLine("Otp Failed");
-                   }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Otp Failed");
+                    }
                 }
 
                 else
-                 {
-                     Console.WriteLine("Login Failed");
-                     return;
+                {
+                    Console.WriteLine("Login Failed");
+                    return;
                 }
-               
+
             }
-      
+
         }
-        public static void logout()
-        {
-            isLoggedIn = false;
-            Midterm.Loading.ShowLoadingScreen();
-        }          
+
+
+
     }
 }
