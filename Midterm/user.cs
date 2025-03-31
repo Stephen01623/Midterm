@@ -72,6 +72,7 @@ namespace Midterm
                 { 
                   Console.WriteLine("Enter your OTP: ");
                   string otp = Console.ReadLine();
+                    
                    if (Midterm.Otp.VerifyOtp(otp))
                    {
                         Midterm.Sendemail.Thank(email);
