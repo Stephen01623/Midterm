@@ -16,6 +16,8 @@ namespace Midterm
         {
             ExchangeDashboard();
         }
+
+        public static int selectedIndex = 0;
         public async static Task ExchangeDashboard()
         {
             
@@ -44,7 +46,7 @@ namespace Midterm
 ";
 
                 string[] options = ["Spot", "Swap", "Deposit", "View Conversion History", "Change Password", "Logout"];
-                int selectedIndex = 0;
+                 selectedIndex = 0;
 
 
                 int boxWidth = banner.Split('\n')[1].Length + 4;
@@ -116,10 +118,7 @@ namespace Midterm
             
         }
 
-        public static async void LoobBack()
-        {
-            await ExchangeDashboard();
-        }
+        
         public static async void ExecuteOption(int index)
         {
            

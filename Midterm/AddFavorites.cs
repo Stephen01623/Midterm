@@ -28,14 +28,14 @@ namespace Midterm
                 Console.Write("Enter Your Favorite Exchanges: ", Color.Green);
                 string enteredPair = Console.ReadLine();
 
-                string email = "charles.bernard.balaguer@student.pnm.edu.ph";
+                
                 {
                     foreach (var pair in client.getPairs())
                     {
                         if (pair == enteredPair)
                         {
                              found = true;
-                            connection.InsertFavorites(enteredPair, email);
+                            connection.InsertFavorites(enteredPair, user.email);
                             Console.WriteLine("Entered Pair Successfully Stored.");
                             break;
                         }

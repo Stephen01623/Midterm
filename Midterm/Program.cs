@@ -9,8 +9,8 @@ namespace Midterm
             //Midterm.Loading.ShowLoadingScreen();
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
 
-            Midterm.AddFavorites.AddFavoritePair();
-            //ExchangerRateDashboard.ExchangeDashboard();
+            //Midterm.AddFavorites.AddFavoritePair();
+           ExchangerRateDashboard.ExchangeDashboard();
             
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();
