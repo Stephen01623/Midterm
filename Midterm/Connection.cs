@@ -3,7 +3,8 @@ using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-
+using System.Drawing;
+using Console = Colorful.Console;
 namespace Activity
 {
     class Connection
@@ -173,6 +174,29 @@ namespace Activity
         }
 
 
+        public void InsertFavorites(string favorite, string email)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO favorites (email, favorites) VALUES (@email, @favorites)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@favorites", favorite);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                Console.WriteLine("Data inserted successfully!", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
     }
 }
 

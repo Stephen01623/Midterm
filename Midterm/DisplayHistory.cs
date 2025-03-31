@@ -17,17 +17,22 @@ namespace Midterm
             Connection connection = new Connection();
             string connectString = connection.GetConnectionString();
 
-            email = "charles.bernard.balaguer@student.pnm.edu.ph";
+            
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connectString))
                 {
+                    
                     conn.Open();
-                    string query = "SELECT * FROM conversion_history WHERE email = @email";
 
+                    //string query = "SELECT * FROM conversion_history WHERE email = @email";
+                    //string query = "SELECT from_currency, to_currency, amount, converted_amount, conversion_date FROM conversion_history WHERE user_id=@userId ORDER BY conversion_date DESC";
+
+                    string query = "SELECT * from conversion_history";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@email", email);
+                    {   
+                        
+                        //cmd.Parameters.AddWithValue("@email", email);
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (!reader.HasRows)
@@ -38,10 +43,11 @@ namespace Midterm
 
                             while (reader.Read())
                             {
+                                
                                 Console.WriteLine("ID: " + reader["id"]);
                                 Console.WriteLine("Email: " + reader["email"]);
                                 Console.WriteLine("Balance: " + reader["balance"]);
-                                Console.WriteLine("Currency " + reader["currency"]);
+                                Console.WriteLine("Currency: " + reader["currency"]);
                                 Console.WriteLine("Created At: " + reader["date"]);
                                 Console.WriteLine("----------------------------------");
                             }
@@ -56,7 +62,7 @@ namespace Midterm
             }
         }
 
-        public static void ViewHistory(string email, float amount_converted, float balance, string currency)
+        public static void InsertToHistory(string email, float amount_converted, float balance, string currency)
         {
             Connection connection = new Connection();
             string connectString = connection.GetConnectionString();
