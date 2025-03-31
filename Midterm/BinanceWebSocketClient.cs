@@ -69,7 +69,7 @@ class BinanceWebSocketClient
                 {
 
 
-                    if (displayCount < 200)
+                    if (displayCount < 500)
                     {
                         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                         string message = Encoding.UTF8.GetString(buffer, 0, result.Count);

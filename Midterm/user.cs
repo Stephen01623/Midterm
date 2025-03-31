@@ -121,6 +121,12 @@ namespace Midterm
 
         }
 
+        public static void logout()
+        {
+            isLoggedIn = false;
+            Midterm.Loading.ShowLoadingScreen();
+        }
+
 
 
     }

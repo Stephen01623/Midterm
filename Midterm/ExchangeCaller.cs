@@ -15,11 +15,11 @@ namespace Midterm
             await client.StartAsync();
             await Midterm.ExchangerRateDashboard.ExchangeDashboard();
         }
-        public static async Task Caller()
-        {
-            CurrencySwap swapper = new CurrencySwap();
-            await swapper.SwapCurrency();
+        //public static void Caller()
+        //{
+        //    CurrencySwap swapper = new CurrencySwap();
+        //     swapper.SwapCurrency();
 
-        }
+        //}
     }
 }

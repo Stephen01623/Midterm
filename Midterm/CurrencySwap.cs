@@ -8,14 +8,14 @@ using Console = Colorful.Console;
 namespace Midterm
 {
    
-    class CurrencySwap
+    class CurrencyManage
     {
         public static float amount_converted;
         public static string currency;
         private BinanceWebSocketClient client;
         private static Dictionary<string, float> exchangeRates;
 
-        public CurrencySwap()
+        public CurrencyManage()
         {
             client = new BinanceWebSocketClient();
             exchangeRates = new Dictionary<string, float>();
@@ -27,19 +27,20 @@ namespace Midterm
             exchangeRates = client.GetTablePricing();
         }
 
-        public async Task SwapCurrency()
+        public static async Task SwapCurrency()
         {
+          
             Console.Clear();
-            Console.WriteLine("💱 Cryptocurrency Swap System 💱", System.Drawing.Color.Cyan);
+            Console.WriteLine("Swap Currency ", System.Drawing.Color.Cyan);
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
-            Console.Write("Enter the currency you want to swap (e.g., BTCUSDT): ", System.Drawing.Color.Yellow);
+            Console.Write("Enter the currency you want to swap (e.g., USDT): ", System.Drawing.Color.Yellow);
             string fromCurrency = Console.ReadLine()?.ToUpper();
 
-            Console.Write("Enter the currency you want to receive (e.g., ETHUSDT): ", System.Drawing.Color.Yellow);
+            Console.Write("Enter the currency you want to receive (e.g., BTC): ", System.Drawing.Color.Yellow);
             string toCurrency = Console.ReadLine()?.ToUpper();
 
-            Console.Write("Enter the amount you want to swap: ", System.Drawing.Color.Yellow);
+            Console.Write($"Enter the amount of {fromCurrency} you want to swap: ", System.Drawing.Color.Yellow);
             if (!float.TryParse(Console.ReadLine(), out float amount))
             {
                 Console.WriteLine("❌ Invalid amount entered.", System.Drawing.Color.Red);
@@ -61,6 +62,27 @@ namespace Midterm
             Console.WriteLine("===================================", System.Drawing.Color.White);
             Console.WriteLine("Press any key to return to the menu...", System.Drawing.Color.Red);
             Console.ReadKey();
+        }
+
+        public static async Task BuyCurrency()
+        {
+            //Enter the currency to be bought
+            Console.WriteLine("Buy Currency ", System.Drawing.Color.Cyan);
+            Console.WriteLine("===================================", System.Drawing.Color.White);
+
+            Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
+            string fromCurrency = Console.ReadLine()?.ToUpper();
+
+            //check if the currency exists
+        }
+        public static async Task SellCurrency()
+        {
+            // Currency selling into USDT
+            Console.WriteLine("Sell Currency ", System.Drawing.Color.Cyan);
+            Console.WriteLine("===================================", System.Drawing.Color.White);
+
+            Console.Write("Enter the currency you want to Sell (e.g., DOGE): ", System.Drawing.Color.Yellow);
+            string sellingCurrency = Console.ReadLine()?.ToUpper();
         }
     }
 }

@@ -17,7 +17,9 @@ namespace Midterm
             if (!Midterm.user.isLoggedIn)
             {
 
-                Console.Write("Enter Deposit Amount: ");
+                Console.Write(@"
+Enter Deposit Amount (USD). It will be converted into USDT
+>>");
                 float money = float.Parse(Console.ReadLine());
                 
                 connection.InsertBalance(money, email);

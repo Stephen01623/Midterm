@@ -45,7 +45,7 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = ["Spot", "Swap", "Deposit", "View Conversion History", "Change Password", "Logout"];
+                string[] options = ["Spot", "Trade", "Deposit", "View Conversion History", "Change Password", "Logout"];
                  selectedIndex = 0;
 
 
@@ -129,14 +129,15 @@ namespace Midterm
                     Midterm.ExchangeCaller.Call();
                     break;
                 case 1:
-                    Midterm.ExchangeCaller.Caller();
+                    //ManageAsset manage = new ManageAsset();
+                    Midterm.ManageAsset.ManageAssetDashboard();
                     break;
                 case 2:
                     Midterm.Deposit.InsertMoney();
                     break;
                 case 3:
                     Activity.Connection conn = new Activity.Connection();
-                    Midterm.DisplayHistory.InsertToHistory(user.email, CurrencySwap.amount_converted, conn.GetBalance(user.email), CurrencySwap.currency);
+                    Midterm.DisplayHistory.InsertToHistory(user.email, CurrencyManage.amount_converted, conn.GetBalance(user.email), CurrencyManage.currency);
 
                     Midterm.DisplayHistory.DisplayConversions("charles.bernard.balaguer@student.pnm.edu.ph");
                         break;
@@ -144,7 +145,7 @@ namespace Midterm
                     Midterm.updateuser.Changepassword();
                     break;
                 case 5:
-                    Environment.Exit(0);
+                    Midterm.user.logout();
                     break;
                 
 

@@ -129,7 +129,7 @@ namespace Activity
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    Console.WriteLine("Connected successfully!");
+                   
                     string query = "UPDATE users SET balance = balance + @balance WHERE Email = @email";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
