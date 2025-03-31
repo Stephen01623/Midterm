@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using System.Net;
 using System.Net.Mail;
 using System.Diagnostics.Eventing.Reader;
+using Org.BouncyCastle.Tls;
 
 namespace Midterm
 {
@@ -103,7 +104,10 @@ namespace Midterm
             }
       
         }
-
-            
+        public static void logout()
+        {
+            isLoggedIn = false;
+            Midterm.Loading.ShowLoadingScreen();
+        }          
     }
 }

@@ -56,7 +56,7 @@ class BinanceWebSocketClient
 
         try
         {
-           
+            bool exit = false;
             using (ClientWebSocket ws = new ClientWebSocket())
             {
                 await ws.ConnectAsync(new Uri(wsUrl), CancellationToken.None);
@@ -64,7 +64,7 @@ class BinanceWebSocketClient
 
                 byte[] buffer = new byte[4096];
                 int displayCount = 0;
-                bool exit = false;
+                
                 while (ws.State == WebSocketState.Open)
                 {
 
@@ -88,15 +88,16 @@ class BinanceWebSocketClient
                     }
 
 
-                    if (exit)
-                    {
-                        Console.Write("Press Any Key: ");
-                        Console.ReadKey();
-                         Midterm.ExchangerRateDashboard.ExchangeDashboard();
-                    }
+                    
                     
                 }
                 
+            }
+            if (exit)
+            {
+                Console.Write("Press Any Key: ");
+                Console.ReadKey();
+                await Midterm.ExchangerRateDashboard.ExchangeDashboard();
             }
         }
         catch (Exception e)
