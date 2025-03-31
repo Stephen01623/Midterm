@@ -13,6 +13,13 @@ namespace Midterm
             BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             await client.StartAsync();
+            await Midterm.ExchangerRateDashboard.ExchangeDashboard();
+        }
+        public static async Task Caller()
+        {
+            CurrencySwap swapper = new CurrencySwap();
+            await swapper.SwapCurrency();
+
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Console = Colorful.Console;
 
 namespace Midterm
 {
@@ -68,7 +69,7 @@ namespace Midterm
                     for (int i = 0; i < bannerLines.Length; i++)
                     {
                         Console.SetCursorPosition(boxX + 2, bannerStartY + i);
-                        Console.Write(bannerLines[i], Color.Blue);
+                        Console.Write(bannerLines[i], Color.Pink);
                     }
 
 
@@ -85,7 +86,7 @@ namespace Midterm
                         else
                         {
                             Console.Write("   ");
-                            Console.WriteLine(options[i], Color.White);
+                            Console.WriteLine(options[i], Color.Lavender);
                         }
                     }
 
@@ -117,7 +118,7 @@ namespace Midterm
                     Midterm.ExchangeCaller.Call();
                     break;
                 case 1:
-                    Midterm.user.Login();
+                    Midterm.ExchangeCaller.Caller();
                     break;
                 case 2:
                     Console.WriteLine("Exiting...", Color.Red);

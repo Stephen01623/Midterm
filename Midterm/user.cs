@@ -44,7 +44,7 @@ namespace Midterm
                 {
                     Console.WriteLine("Enter your OTP: ");
                     string otp = Console.ReadLine();
-                    if (Midterm.Otp.VerifyOtp(otp))
+                    if (Midterm.Otp.VerifyOtp(email, otp))
                     {
                         con.InsertData(username, password, email, phone, address);
                         Console.WriteLine("Register Successfully");
@@ -72,8 +72,8 @@ namespace Midterm
                 { 
                   Console.WriteLine("Enter your OTP: ");
                   string otp = Console.ReadLine();
-                    
-                   if (Midterm.Otp.VerifyOtp(otp))
+                    //if(Midterm.Otp.VerifyOtp)
+                   if (Midterm.Otp.VerifyOtp(email, otp))
                    {
                         Midterm.Sendemail.Thank(email);
                         Console.WriteLine("Login Success");
