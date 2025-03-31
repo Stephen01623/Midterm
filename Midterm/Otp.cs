@@ -8,21 +8,36 @@ namespace Midterm
 {
     class Otp
     {
+        private static Dictionary<string, (string otp, DateTime expiry)> otpStorage = new Dictionary<string, (string, DateTime)>();
         public static string Generateotp;
 
         public static void SendOtp(string email)
         {
             Generateotp = Generate();
-            Sendemail.SendOtp(email, Generateotp);
+            otpStorage[email] = (Generateotp, DateTime.Now.AddMinutes(1)); 
+            Sendemail.SendingemailOtp(email, Generateotp);
         }
+
         public static string Generate()
         {
             Random random = new Random();
-            return random.Next(10000, 99999). ToString();
+            return random.Next(10000, 99999).ToString();
         }
-        public static bool VerifyOtp(string userOTP) 
+
+        public static bool VerifyOtp(string email, string userOTP)
         {
-            return userOTP == Generateotp;
+            if (otpStorage.ContainsKey(email))
+            {
+                var (otp, expiry) = otpStorage[email];
+                if (DateTime.Now <= expiry && userOTP == otp)
+                {
+                    otpStorage.Remove(email); // Remove OTP after verification
+                    return true;
+                }
+            }
+            return false;
         }
     }
-}
+
+
+ }

@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using static System.Net.Mime.MediaTypeNames;
+using System.Collections;
+using System.ComponentModel;
+using System.Drawing;
 
 namespace Midterm
 {
@@ -13,7 +17,7 @@ namespace Midterm
     {
         static string senderEmail = "karyllen545@gmail.com";
         static string senderPassword = "jshw ychy ovru xdcj";
-        public static void SendOtp(string gmailA, string otp)
+        public static void SendingemailOtp(string gmailA, string otp)
         {
             try
             {
@@ -23,15 +27,17 @@ namespace Midterm
                     Credentials = new NetworkCredential(senderEmail, senderPassword),
                     EnableSsl = true
                 };
+                string htmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "email.html");
+               
 
-
-                string htmlBody = $"ito yung code mong kupal ka: {otp}";
-
+               
+                string htmlBody = File.ReadAllText(htmlFilePath);
+                
                 MailMessage mail = new MailMessage
                 {
                     From = new MailAddress(senderEmail),
-                    Subject = "OTP",
-                    Body = htmlBody,
+                    Subject = "GROUP 1",
+                    Body = htmlBody.Replace("{OTP}", otp),
                     IsBodyHtml = true
                 };
 
