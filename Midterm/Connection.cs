@@ -87,6 +87,10 @@ namespace Activity
                 return false;
             }
         }
+        public static void updateUser(string password)
+        {
+
+        }
 
     }
 

@@ -10,10 +10,11 @@ namespace Midterm
 {
      class ExchangerRateDashboard
     {
-
+        
         public async static Task ExchangeDashboard()
         {
-
+            
+            
             BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             while (true)
@@ -37,12 +38,12 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = ["Spot", "Swap", "logout"];
+                string[] options = ["Spot", "Swap", "Deposit", "Edit Account Details", "Logout"];
                 int selectedIndex = 0;
 
 
                 int boxWidth = banner.Split('\n')[1].Length + 4;
-                int boxHeight = banner.Split('\n').Length + 6;
+                int boxHeight = banner.Split('\n').Length + 10;
                 int boxX = (consoleWidth - boxWidth) / 2;
                 int boxY = 3;
 
@@ -121,9 +122,15 @@ namespace Midterm
                     Midterm.ExchangeCaller.Caller();
                     break;
                 case 2:
-                    Console.WriteLine("Exiting...", Color.Red);
+                    Midterm.Deposit.InsertMoney();
+                    break;
+                case 3:
+                   
+                case 4:
+                    Midterm.user.logout();
                     Environment.Exit(0);
                     break;
+
             }
 
             Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
