@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Activity;
 using Console = Colorful.Console;
 
 namespace Midterm
@@ -42,7 +43,7 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = ["Spot", "Swap", "Deposit", "Change Password", "Logout"];
+                string[] options = ["Spot", "Swap", "Deposit", "View Conversion History", "Change Password", "Logout"];
                 int selectedIndex = 0;
 
 
@@ -135,9 +136,15 @@ namespace Midterm
                     Midterm.Deposit.InsertMoney();
                     break;
                 case 3:
+                    Activity.Connection conn = new Activity.Connection();
+                    //Midterm.DisplayHistory.ViewHistory(user.email, CurrencySwap.amount_converted, conn.GetBalance(user.email), CurrencySwap.currency);
+
+                    Midterm.DisplayHistory.DisplayConversions(user.email);
+                        break;
+                case 4:
                     Midterm.updateuser.Changepassword();
                     break;
-                case 4:
+                case 5:
                     Environment.Exit(0);
                     break;
                 
@@ -150,6 +157,8 @@ namespace Midterm
             await ExchangeDashboard();
 
         }
+
+        
 
        
     }

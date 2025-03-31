@@ -7,8 +7,11 @@ using Console = Colorful.Console;
 
 namespace Midterm
 {
+   
     class CurrencySwap
     {
+        public static float amount_converted;
+        public static string currency;
         private BinanceWebSocketClient client;
         private static Dictionary<string, float> exchangeRates;
 

@@ -14,11 +14,14 @@ namespace Midterm
     class user
     {
 
+        
         public static bool isLoggedIn = false; 
         public static Connection con = new Connection();
         public static bool conn = false;
+        public static string email;
         public static async void Register()
         {
+
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
             //await client.StartAsync();
             Console.WriteLine(@"
@@ -79,7 +82,7 @@ namespace Midterm
                                             ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║
                                             ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝");
             Console.WriteLine("Enter your email: ");
-            string email = Console.ReadLine();
+            email = Console.ReadLine();
             Console.WriteLine("Enter your password: ");
             string password = Midterm.Password.ReadPassword();
             

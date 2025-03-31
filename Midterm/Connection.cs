@@ -2,6 +2,7 @@
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Activity
 {
@@ -146,7 +147,29 @@ namespace Activity
                 Console.WriteLine("Error " + e.Message);
             }
 
+            
 
+
+        }
+        public float GetBalance(string email)
+        {
+            float balance = 0;
+            email = "charles.bernard.balaguer@student.pnm.edu.ph";
+            string query = "SELECT balance FROM users WHERE email = @email";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@email", email);
+                    object result = cmd.ExecuteScalar();
+            
+                   
+                }
+            }
+
+            return balance;
         }
 
 
