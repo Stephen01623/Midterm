@@ -82,12 +82,13 @@ namespace Midterm
             string email = Console.ReadLine();
             Console.WriteLine("Enter your password: ");
             string password = Midterm.Password.ReadPassword();
-            Midterm.Otp.SendOtp(email);
+            
             bool conn = false;
             while (!conn)
             {
                 if (con.ValidateLogin(email, password))
                 {
+                    Midterm.Otp.SendOtp(email);
                     Console.WriteLine("Enter your OTP: ");
                     string otp = Console.ReadLine();
                     //if(Midterm.Otp.VerifyOtp)

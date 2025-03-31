@@ -38,7 +38,7 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = ["Spot", "Swap", "Deposit", "Edit Account Details", "Logout"];
+                string[] options = ["Spot", "Swap", "Deposit", "Change Password", "Logout"];
                 int selectedIndex = 0;
 
 
@@ -125,9 +125,9 @@ namespace Midterm
                     Midterm.Deposit.InsertMoney();
                     break;
                 case 3:
-                   
+                    Midterm.updateuser.Changepassword();
+                    break;
                 case 4:
-                    Midterm.user.logout();
                     Environment.Exit(0);
                     break;
 

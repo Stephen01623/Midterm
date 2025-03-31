@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using System;
+using System.Collections.Generic;
 
 namespace Activity
 {
@@ -28,7 +30,7 @@ namespace Activity
                     {
                         cmd.Parameters.AddWithValue("@Username", username);
                         cmd.Parameters.AddWithValue("@Password", userPassword);
-                        cmd.Parameters.AddWithValue("@Email",    useremail);
+                        cmd.Parameters.AddWithValue("@Email", useremail);
                         cmd.Parameters.AddWithValue("@Cellphonenumber", usercellphonenumber);
                         cmd.Parameters.AddWithValue("@Address", useraddress);
                         cmd.ExecuteNonQuery();
@@ -87,18 +89,34 @@ namespace Activity
                 return false;
             }
         }
-        public static void updateUser(string password)
+        public bool UpdatePassword(string email, string newPassword)
         {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE users SET Password = @Password WHERE Email = @Email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        cmd.Parameters.AddWithValue("@Password", newPassword);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
 
         }
-
+        
+        
     }
-
-
-
-
 }
-
 
 
 
