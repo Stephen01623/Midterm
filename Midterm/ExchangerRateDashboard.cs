@@ -45,7 +45,7 @@ namespace Midterm
   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
 ";
 
-                string[] options = ["Spot", "Trade", "Deposit", "View Conversion History", "Change Password", "Logout"];
+                string[] options = ["Spot", "Trade", "Deposit", "Add Favorites", "View Conversion History", "Change Password", "Logout"];
                  selectedIndex = 0;
 
 
@@ -136,15 +136,18 @@ namespace Midterm
                     Midterm.Deposit.InsertMoney();
                     break;
                 case 3:
+                    Midterm.FavoritesManager.FavoritesMenu(user.email);
+                    break;
+                case 4:
                     Activity.Connection conn = new Activity.Connection();
                     Midterm.DisplayHistory.InsertToHistory(user.email, CurrencyManage.amount_converted, conn.GetBalance(user.email), CurrencyManage.currency);
 
                     Midterm.DisplayHistory.DisplayConversions("charles.bernard.balaguer@student.pnm.edu.ph");
                         break;
-                case 4:
+                case 5:
                     Midterm.updateuser.Changepassword();
                     break;
-                case 5:
+                case 6:
                     Midterm.user.logout();
                     break;
                 

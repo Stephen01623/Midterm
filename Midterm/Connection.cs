@@ -197,6 +197,74 @@ namespace Activity
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
+
+        public List<string> GetFavorites(string email)
+        {
+            List<string> favorites = new List<string>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT favorites FROM favorites WHERE email = @Email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                favorites.Add(reader.GetString("favorites"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message, Color.Red);
+            }
+
+            return favorites;
+        }
+
+
+        public void DeleteFavorite(string favorite, string email)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM favorites WHERE email = @Email AND favorites = @Favorite";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        cmd.Parameters.AddWithValue("@Favorite", favorite);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("Favorite Pair Removed Successfully!", Color.Green);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Pair Not Found in Favorites!", Color.Red);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message, Color.Red);
+            }
+        }
+
+        public static void BuyCurrency()
+        {
+
+        }
     }
 }
 
