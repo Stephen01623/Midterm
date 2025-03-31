@@ -98,6 +98,7 @@ namespace Midterm
                         Console.WriteLine("Login Success");
 
                         //Dashboard of Cryptocurrency Exchange Rate
+                        ExchangerRateDashboard.ExchangeDashboard();
                         conn = true;
                         isLoggedIn = true;
                     }

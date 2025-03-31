@@ -8,8 +8,8 @@ namespace Midterm
         {
             //Midterm.Loading.ShowLoadingScreen();
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
-            ExchangerRateDashboard.ExchangeDashboard();
-
+            //ExchangerRateDashboard.ExchangeDashboard();
+            DisplayHistory.ViewHistory();
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();
 

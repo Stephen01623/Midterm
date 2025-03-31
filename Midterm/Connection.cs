@@ -17,6 +17,11 @@ namespace Activity
             string password = "";
             connectionString = $"SERVER={server};DATABASE={database};UID={uid};PASSWORD={password};";
         }
+        public string GetConnectionString()
+        {
+            return connectionString;
+
+        }
 
         public void InsertData(string username, string userPassword, string useremail, string usercellphonenumber, string useraddress)
         {

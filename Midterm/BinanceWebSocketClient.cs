@@ -60,7 +60,7 @@ class BinanceWebSocketClient
             using (ClientWebSocket ws = new ClientWebSocket())
             {
                 await ws.ConnectAsync(new Uri(wsUrl), CancellationToken.None);
-                Console.WriteLine("✅ Connected to Binance Multi-Stream WebSocket!\n");
+                Console.WriteLine("Connected to Binance Multi-Stream WebSocket!\n");
 
                 byte[] buffer = new byte[4096];
                 int displayCount = 0;
@@ -69,7 +69,7 @@ class BinanceWebSocketClient
                 {
 
 
-                    if (displayCount < 300)
+                    if (displayCount < 200)
                     {
                         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                         string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
@@ -82,8 +82,9 @@ class BinanceWebSocketClient
                     else
 
                     {
-                        exit = true;
-                        break;
+                        Console.ReadKey();
+
+                        ExchangerRateDashboard.ExchangeDashboard();
                        
                     }
 
@@ -129,7 +130,7 @@ class BinanceWebSocketClient
     public void DisplayPriceTable()
     {
         Console.Clear();
-        Console.WriteLine("📊 Most Traded Cryptocurrency Pairs from Binance");
+        Console.WriteLine("Top 10 Most Traded Crytocurrency From Binance");
         Console.WriteLine("=================================");
         Console.WriteLine("| Pair      |    Price     |");
         Console.WriteLine("|-----------|-------------|");

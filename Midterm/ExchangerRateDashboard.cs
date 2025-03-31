@@ -11,6 +11,10 @@ namespace Midterm
      class ExchangerRateDashboard
     {
         
+        public static void EnterDashboard()
+        {
+            ExchangeDashboard();
+        }
         public async static Task ExchangeDashboard()
         {
             
@@ -107,8 +111,14 @@ namespace Midterm
                     }
                 }
             }
+            
+            
         }
 
+        public static async void LoobBack()
+        {
+            await ExchangeDashboard();
+        }
         public static async void ExecuteOption(int index)
         {
            
@@ -130,12 +140,17 @@ namespace Midterm
                 case 4:
                     Environment.Exit(0);
                     break;
+                
+
 
             }
 
             Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
             Console.ReadKey();
-            
+            await ExchangeDashboard();
+
         }
+
+       
     }
 }
