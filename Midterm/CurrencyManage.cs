@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Activity;
 using Midterm;
 using Console = Colorful.Console;
 
@@ -14,7 +15,7 @@ namespace Midterm
         public static string currency;
         private BinanceWebSocketClient client;
         private static Dictionary<string, float> exchangeRates;
-
+        public static Connection conn = new Connection();
         public CurrencyManage()
         {
             client = new BinanceWebSocketClient();
@@ -70,10 +71,27 @@ namespace Midterm
             Console.WriteLine("Buy Currency ", System.Drawing.Color.Cyan);
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
-            Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
-            string fromCurrency = Console.ReadLine()?.ToUpper();
+            while(true)
+            {
+                Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
+                string fromCurrency = Console.ReadLine()?.ToUpper();
 
-            //check if the currency exists
+                //check if the currency exists
+
+                if (conn.CheckCurrency(fromCurrency))
+                {
+                    Console.Write("Enter the Amount you want to Buy: ", System.Drawing.Color.Yellow);
+                    float amount = float.Parse(Console.ReadLine());
+                   
+                    //Connection.BuyingCurrency(fromCurrency, amount);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Currency Does not Exists.");
+                }
+            }
+           
         }
         public static async Task SellCurrency()
         {

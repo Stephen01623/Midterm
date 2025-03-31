@@ -261,12 +261,110 @@ namespace Activity
             }
         }
 
-        public static void BuyCurrency()
+
+        public bool CheckCurrency(string ticker)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM assets WHERE ticker_symbol = @ticker";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ticker", ticker);
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        return count > 0;
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                
+                Console.WriteLine("Error: " + e.Message, Color.Red);
+                
+            }
+            return false;
+        }
+
+        public void GetUserId(string email)
+        {
+           
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    int userId;
+                    string query = "SELECT id FROM users WHERE email = @email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("email", email);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            userId = Convert.ToInt32(result);
+                            Console.WriteLine(userId);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error ", e.Message);
+            }
+        }
+        public void GetAssetId(string ticker_symbol)
         {
 
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    int assetId;
+                    string query = "SELECT asset_id FROM assets WHERE ticker_symbol = @ticker_symbol";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("ticker_symbol", ticker_symbol);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            assetId = Convert.ToInt32(result);
+                            Console.WriteLine(assetId);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error ", e.Message);
+            }
+        }
+        public void BuyingCurrency(string desiredCurrency, float amount)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO holdings ";
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error ", e.Message);
+            }
+            
         }
     }
 }
 
 
 
+             

@@ -1,4 +1,5 @@
 ﻿using System;
+using Activity;
 
 namespace Midterm
 {
@@ -10,10 +11,14 @@ namespace Midterm
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
-           ExchangerRateDashboard.ExchangeDashboard();
-            
+            //ExchangerRateDashboard.ExchangeDashboard();
+
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();
+
+            Connection conn = new Connection();
+
+            conn.GetAssetId("SOL");
 
         }
     }
