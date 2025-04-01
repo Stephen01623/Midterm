@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Drawing;
 using Console = Colorful.Console;
 using Midterm;
+using System.Text.RegularExpressions;
 namespace Activity
 {
     class Connection
@@ -642,6 +643,54 @@ namespace Activity
                 Console.ReadKey();
             }
             
+        }
+
+        public void UpdateAssetRate(Dictionary<string, float>tablePrices)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    foreach (var pair in tablePrices)
+                    {
+                        string symbol = pair.Key;
+                        float value = pair.Value;
+
+                        Match match = Regex.Match(symbol, @"^([a-zA-Z]+)(usdt)$", RegexOptions.IgnoreCase); 
+                        if (match.Success)
+                        {
+                            string baseCurrency = match.Groups[1].Value.ToUpper();
+                            string quoteCurrency = match.Groups[2].Value.ToUpper();
+
+                            Console.WriteLine($"Base: {baseCurrency} Quote: {quoteCurrency}");
+
+                            string query = "UPDATE assets SET rate = @rate WHERE ticker_symbol = @ticker_symbol";
+                            
+                            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@rate", value);
+                                cmd.Parameters.AddWithValue("@ticker_symbol", baseCurrency);
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                if (rowsAffected > 0)
+                                {
+                                    Console.WriteLine($"Currency {baseCurrency} Updated Successfully!");
+                                }
+
+                            }
+                        }
+                    }
+
+                    Console.ReadKey();
+                 ExchangerRateDashboard.ExchangeDashboard();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                Console.ReadKey();
+            }
         }
     }
 }
