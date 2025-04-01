@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Midterm;
+using System.Text.RegularExpressions;
+using Activity;
 
 
 class BinanceWebSocketClient
@@ -16,6 +18,7 @@ class BinanceWebSocketClient
         "xrpusdt", "dogeusdt", "adausdt", "avaxusdt",
         "bchusdt", "dotusdt"
     };
+
 
     public string[] getPairs() { return pairs; }
     private readonly string wsUrl;
@@ -29,6 +32,7 @@ class BinanceWebSocketClient
 
     public Dictionary<string, float> GetTablePricing()
     {
+        
         return TablePricing;
     }
 
@@ -59,6 +63,7 @@ class BinanceWebSocketClient
             bool exit = false;
             using (ClientWebSocket ws = new ClientWebSocket())
             {
+                Connection connect = new Connection();
                 await ws.ConnectAsync(new Uri(wsUrl), CancellationToken.None);
                 Console.WriteLine("Connected to Binance Multi-Stream WebSocket!\n");
 
@@ -69,7 +74,7 @@ class BinanceWebSocketClient
                 {
 
 
-                    if (displayCount < 500)
+                    if (displayCount < 1000)
                     {
                         var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                         string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
@@ -82,11 +87,10 @@ class BinanceWebSocketClient
                     }
                     else
 
-                    {
+                    { 
                         Console.ReadKey();
                         ExchangerRateDashboard.selectedIndex = 0;
-                        ExchangerRateDashboard.ExchangeDashboard();
-                       
+                        connect.UpdateAssetRate(GetTablePricing());          
                     }
 
 
