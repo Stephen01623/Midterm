@@ -100,7 +100,7 @@ namespace Midterm
                     Console.Write("Enter the Amount you want to Buy: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
                    
-                    conn.BuyingCurrency(toCurrency, amount, conn.GetUserId(user.email), conn.GetAssetId(toCurrency));
+                    conn.BuyingCurrency(toCurrency, amount, conn.GetUserId(User.email), conn.GetAssetId(toCurrency));
                     break;
                 }
                 else

@@ -21,7 +21,7 @@ namespace Midterm
  ██║╚██╔╝██║██║   ██║██║     ██║   ██║╚════╝██║     ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║██║       ╚██╔╝  
  ██║ ╚═╝ ██║╚██████╔╝███████╗██║   ██║      ╚██████╗╚██████╔╝██║  ██║██║  ██║███████╗██║ ╚████║╚██████╗   ██║   
  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝   ╚═╝       ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   ╚═╝   
-                                                                                                               
+                                                                                               
   ██████╗ ██████╗ ███╗   ██╗██╗   ██╗███████╗██████╗ ████████╗███████╗██████╗                                   
  ██╔════╝██╔═══██╗████╗  ██║██║   ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗                                  
  ██║     ██║   ██║██╔██╗ ██║██║   ██║█████╗  ██████╔╝   ██║   █████╗  ██████╔╝                                  
@@ -35,7 +35,7 @@ namespace Midterm
 
                 
                 int boxWidth = banner.Split('\n')[1].Length + 4; 
-                int boxHeight = banner.Split('\n').Length + 6;  
+                int boxHeight = banner.Split('\n').Length + 10;  
                 int boxX = (consoleWidth - boxWidth) / 2;
                 int boxY = 3; 
                 
@@ -108,10 +108,10 @@ namespace Midterm
             switch (index)
             {
                 case 0:
-                    Midterm.user.Register();
+                    Midterm.User.Register();
                     break;
                 case 1:
-                    Midterm.user.Login();
+                    Midterm.User.Login();
                     break;            
                 case 2:
                     Console.WriteLine("Exiting...", Color.Red);
@@ -119,9 +119,10 @@ namespace Midterm
                     break;
             }
 
+           Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight - 5);
             Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
             Console.ReadKey();
-            if (user.isLoggedIn)
+            if (User.isLoggedIn)
 
             {
                 Midterm.ExchangerRateDashboard.ExchangeDashboard();

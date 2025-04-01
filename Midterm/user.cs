@@ -11,123 +11,147 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace Midterm
 {
-    class user
+    class User
     {
-
-        
-        public static bool isLoggedIn = false; 
+        public static bool isLoggedIn = false;
         public static Connection con = new Connection();
         public static bool conn = false;
         public static string email;
-        public static async void Register()
-        {
 
-            //BinanceWebSocketClient client = new BinanceWebSocketClient();
-            //await client.StartAsync();
-            Console.WriteLine(@"
-                         ██████╗ ███████╗ ██████╗ ██╗███████╗████████╗███████╗██████╗ 
-                         ██╔══██╗██╔════╝██╔════╝ ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗
-                         ██████╔╝█████╗  ██║  ███╗██║███████╗   ██║   █████╗  ██████╔╝
-                         ██╔══██╗██╔══╝  ██║   ██║██║╚════██║   ██║   ██╔══╝  ██╔══██╗
-                         ██║  ██║███████╗╚██████╔╝██║███████║   ██║   ███████╗██║  ██║
-                         ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝");
-            Console.WriteLine("Enter your Email: ");
-            string email = Console.ReadLine();
+        public static void DrawBox(int x, int y, int width, int height)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write("╔" + new string('═', width) + "╗");
+            for (int i = 1; i < height - 1; i++)
+            {
+                Console.SetCursorPosition(x, y + i);
+                Console.Write("║" + new string(' ', width) + "║");
+            }
+            Console.SetCursorPosition(x, y + height - 1);
+            Console.Write("╚" + new string('═', width) + "╝");
+        }
+
+        public static void Register()
+        {
+            Console.Clear();
+            Console.Write(@"
+
+
+                                            ░█▀▄░█▀▀░█▀▀░▀█▀░█▀▀░▀█▀░█▀▀░█▀▄
+                                            ░█▀▄░█▀▀░█░█░░█░░▀▀█░░█░░█▀▀░█▀▄
+                                            ░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀ ");
+            int boxWidth = 40;
+            int boxHeight = 15;
+            int startX = (Console.WindowWidth - boxWidth) / 2;
+            int startY = (Console.WindowHeight - boxHeight) / 2;
+            DrawBox(startX, startY, boxWidth, boxHeight);
+
          
+            
+            Console.SetCursorPosition(startX + 2, startY + 1);
+            Console.Write("Enter your Email: ");
+            Console.SetCursorPosition(startX + 20, startY + 1);
+            string email = Console.ReadLine();
+
             if (con.UserExists(email))
             {
-                Console.WriteLine("Email already exist");
+                Console.SetCursorPosition(startX + 2, startY + 3);
+                Console.Write("Email already exists!");
+                return;
             }
-            else
+
+            
+            Console.SetCursorPosition(startX + 2, startY + 2);
+            Console.Write("Enter your Username: ");
+            string username = Console.ReadLine();
+
+            Console.SetCursorPosition(startX + 2, startY + 4);
+            Console.Write("Enter your Password: ");
+            string password = Midterm.Password.ReadPassword();
+
+            Console.SetCursorPosition(startX + 2, startY + 5);
+            Console.Write("Enter your Phone: ");
+            string phone = Console.ReadLine();
+
+            Console.SetCursorPosition(startX + 2, startY + 6);
+            Console.Write("Enter your Address: ");
+            string address = Console.ReadLine();
+
+            Midterm.Otp.SendOtp(email);
+            while (!conn)
             {
-                Console.WriteLine(@"
- ___      ___  ___  __           __   ___  __                   ___  
-|__  |\ |  |  |__  |__)    |  | /__` |__  |__) |\ |  /\   |\/| |__  .
-|___ | \|  |  |___ |  \    \__/ .__/ |___ |  \ | \| /~~\  |  | |___ .");
-                string username = Console.ReadLine(); 
-                Console.WriteLine("Enter your password: ");
-                string password = Midterm.Password.ReadPassword();
-                Console.WriteLine("Enter your phone number: ");
-                string phone = Console.ReadLine();
-                Console.WriteLine("Enter your address: ");
-                string address = Console.ReadLine();
-                Midterm.Otp.SendOtp(email);
-                while (!conn)
+                Console.SetCursorPosition(startX + 2, startY + 7);
+                Console.Write("Enter your OTP: ");
+                string otp = Console.ReadLine();
+                if (Midterm.Otp.VerifyOtp(email, otp))
                 {
-                    Console.WriteLine("Enter your OTP: ");
-                    string otp = Console.ReadLine();
-                    if (Midterm.Otp.VerifyOtp(email, otp))
-                    {
-                        con.InsertData(username, password, email, phone, address);
-                        Console.WriteLine("Register Successfully");
-                        conn = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Otp Failed");
-                    }
+                    con.InsertData(username, password, email, phone, address);
+                    Console.SetCursorPosition(startX + 2, startY + 8);
+                    Console.Write("Registered Successfully!");
+                    conn = true;
+                }
+                else
+                {
+                    Console.SetCursorPosition(startX + 2, startY + 8);
+                    Console.Write("OTP Failed!");
                 }
             }
         }
 
         public static void Login()
         {
-            Connection con = new Connection();
-            Console.WriteLine(@" 
+            Console.Clear();
+            Console.WriteLine(@"
+                                   
 
-                                            ██╗      ██████╗  ██████╗ ██╗███╗   ██╗
-                                            ██║     ██╔═══██╗██╔════╝ ██║████╗  ██║
-                                            ██║     ██║   ██║██║  ███╗██║██╔██╗ ██║
-                                            ██║     ██║   ██║██║   ██║██║██║╚██╗██║
-                                            ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║
-                                            ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝");
-            Console.WriteLine("Enter your email: ");
+                                                ░█░░░█▀█░█▀▀░▀█▀░█▀█
+                                                ░█░░░█░█░█░█░░█░░█░█
+                                                ░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀");
+            int boxWidth = 40;
+            int boxHeight = 15;
+            int startX = (Console.WindowWidth - boxWidth) / 2;
+            int startY = (Console.WindowHeight - boxHeight) / 2;
+            DrawBox(startX, startY, boxWidth, boxHeight);
+
+            Console.SetCursorPosition(startX + 2, startY + 1);
+            Console.Write("Enter your Email: ");
             email = Console.ReadLine();
-            Console.WriteLine("Enter your password: ");
+
+            Console.SetCursorPosition(startX + 2, startY + 2);
+            Console.Write("Enter your Password: ");
             string password = Midterm.Password.ReadPassword();
-            
-            bool conn = false;
-            while (!conn)
+
+            if (con.ValidateLogin(email, password))
             {
-                if (con.ValidateLogin(email, password))
+                Midterm.Otp.SendOtp(email);
+                Console.SetCursorPosition(startX + 2, startY + 3);
+                Console.Write("Enter your OTP: ");
+                string otp = Console.ReadLine();
+                if (Midterm.Otp.VerifyOtp(email, otp))
                 {
-                    Midterm.Otp.SendOtp(email);
-                    Console.WriteLine("Enter your OTP: ");
-                    string otp = Console.ReadLine();
-                    //if(Midterm.Otp.VerifyOtp)
-                    if (Midterm.Otp.VerifyOtp(email, otp))
-                    {
-                        Midterm.Sendemail.Thank(email);
-                        Console.WriteLine("Login Success");
-
-                        //Dashboard of Cryptocurrency Exchange Rate
-                        ExchangerRateDashboard.ExchangeDashboard();
-                        conn = true;
-                        isLoggedIn = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Otp Failed");
-                    }
+                    Midterm.Sendemail.Thank(email);
+                    Console.SetCursorPosition(startX + 2, startY + 4);
+                    Console.Write("Login Successful!");
+                    isLoggedIn = true;
+                    ExchangerRateDashboard.ExchangeDashboard();
                 }
-
                 else
                 {
-                    Console.WriteLine("Login Failed");
-                    return;
+                    Console.SetCursorPosition(startX + 2, startY + 4);
+                    Console.Write("OTP Failed!");
                 }
-
             }
-
+            else
+            {
+                Console.SetCursorPosition(startX + 2, startY + 3);
+                Console.Write("Login Failed!");
+            }
         }
 
-        public static void logout()
+        public static void Logout()
         {
             isLoggedIn = false;
             Midterm.Loading.ShowLoadingScreen();
         }
-
-
-
     }
 }

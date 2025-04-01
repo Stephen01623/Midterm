@@ -30,61 +30,48 @@ namespace Midterm
                 int consoleWidth = Console.WindowWidth;
 
                 string banner = @" 
- ███╗   ███╗██╗   ██╗██╗  ████████╗██╗       ██████╗██╗   ██╗██████╗ ██████╗ ███████╗███╗   ██╗ ██████╗██╗   ██╗
- ████╗ ████║██║   ██║██║  ╚══██╔══╝██║      ██╔════╝██║   ██║██╔══██╗██╔══██╗██╔════╝████╗  ██║██╔════╝╚██╗ ██╔╝
- ██╔████╔██║██║   ██║██║     ██║   ██║█████╗██║     ██║   ██║██████╔╝██████╔╝█████╗  ██╔██╗ ██║██║      ╚████╔╝ 
- ██║╚██╔╝██║██║   ██║██║     ██║   ██║╚════╝██║     ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║██║       ╚██╔╝  
- ██║ ╚═╝ ██║╚██████╔╝███████╗██║   ██║      ╚██████╗╚██████╔╝██║  ██║██║  ██║███████╗██║ ╚████║╚██████╗   ██║   
- ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝   ╚═╝       ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   ╚═╝   
-                                                                                                               
-  ██████╗ ██████╗ ███╗   ██╗██╗   ██╗███████╗██████╗ ████████╗███████╗██████╗                                   
- ██╔════╝██╔═══██╗████╗  ██║██║   ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗                                  
- ██║     ██║   ██║██╔██╗ ██║██║   ██║█████╗  ██████╔╝   ██║   █████╗  ██████╔╝                                  
- ██║     ██║   ██║██║╚██╗██║╚██╗ ██╔╝██╔══╝  ██╔══██╗   ██║   ██╔══╝  ██╔══██╗                                  
- ╚██████╗╚██████╔╝██║ ╚████║ ╚████╔╝ ███████╗██║  ██║   ██║   ███████╗██║  ██║                                  
-  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                   
-";
+▐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▌
+▐                                                                                                                     ▌
+▐                                                                                                                     ▌
+▐                                                                                                                     ▌
+▐   ███╗   ███╗██╗   ██╗██╗  ████████╗██╗       ██████╗██╗   ██╗██████╗ ██████╗ ███████╗███╗   ██╗ ██████╗██╗   ██╗   ▌
+▐   ████╗ ████║██║   ██║██║  ╚══██╔══╝██║      ██╔════╝██║   ██║██╔══██╗██╔══██╗██╔════╝████╗  ██║██╔════╝╚██╗ ██╔╝   ▌
+▐   ██╔████╔██║██║   ██║██║     ██║   ██║█████╗██║     ██║   ██║██████╔╝██████╔╝█████╗  ██╔██╗ ██║██║      ╚████╔╝    ▌
+▐   ██║╚██╔╝██║██║   ██║██║     ██║   ██║╚════╝██║     ██║   ██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║██║       ╚██╔╝     ▌
+▐   ██║ ╚═╝ ██║╚██████╔╝███████╗██║   ██║      ╚██████╗╚██████╔╝██║  ██║██║  ██║███████╗██║ ╚████║╚██████╗   ██║      ▌
+▐   ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝   ╚═╝       ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝   ╚═╝      ▌
+▐                                                                                                                     ▌
+▐                   ██████╗ ██████╗ ███╗   ██╗██╗   ██╗███████╗██████╗ ████████╗███████╗██████╗                       ▌
+▐                  ██╔════╝██╔═══██╗████╗  ██║██║   ██║██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗                      ▌
+▐                  ██║     ██║   ██║██╔██╗ ██║██║   ██║█████╗  ██████╔╝   ██║   █████╗  ██████╔╝                      ▌
+▐                  ██║     ██║   ██║██║╚██╗██║╚██╗ ██╔╝██╔══╝  ██╔══██╗   ██║   ██╔══╝  ██╔══██╗                      ▌
+▐                  ╚██████╗╚██████╔╝██║ ╚████║ ╚████╔╝ ███████╗██║  ██║   ██║   ███████╗██║  ██║                      ▌
+▐                   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                      ▌
+▐                                                                                                                     ▌
+▐                                                                                                                     ▌
+▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌▌";
 
+                Console.WriteLine(banner, Color.LimeGreen);
                 string[] options = ["Spot", "Trade", "Deposit", "Add Favorites", "View Conversion History", "Change Password", "Logout"];
-                 selectedIndex = 0;
+                int selectedIndex = 0;
 
 
-                int boxWidth = banner.Split('\n')[1].Length + 4;
-                int boxHeight = banner.Split('\n').Length + 10;
-                int boxX = (consoleWidth - boxWidth) / 2;
-                int boxY = 3;
+                int menuStartY = 22;
+                int menuStartX = (consoleWidth / 2) - 55;
 
                 while (true)
                 {
-                    Console.Clear();
 
-
-                    Console.SetCursorPosition(boxX, boxY);
-                    Console.Write("╔" + new string('═', boxWidth - 2) + "╗");
-
-                    for (int i = 1; i < boxHeight - 1; i++)
-                    {
-                        Console.SetCursorPosition(boxX, boxY + i);
-                        Console.Write("║" + new string(' ', boxWidth - 2) + "║");
-                    }
-
-                    Console.SetCursorPosition(boxX, boxY + boxHeight - 1);
-                    Console.Write("╚" + new string('═', boxWidth - 2) + "╝");
-
-
-                    string[] bannerLines = banner.Split('\n');
-                    int bannerStartY = boxY + 1;
-                    for (int i = 0; i < bannerLines.Length; i++)
-                    {
-                        Console.SetCursorPosition(boxX + 2, bannerStartY + i);
-                        Console.Write(bannerLines[i], Color.Pink);
-                    }
-
-
-                    int menuStartY = bannerStartY + bannerLines.Length + 1;
                     for (int i = 0; i < options.Length; i++)
                     {
-                        Console.SetCursorPosition(boxX + 5, menuStartY + i);
+                        Console.SetCursorPosition(menuStartX - 3, menuStartY + i);
+                        Console.Write(new string(' ', consoleWidth));
+                    }
+
+
+                    for (int i = 0; i < options.Length; i++)
+                    {
+                        Console.SetCursorPosition(menuStartX, menuStartY + i);
 
                         if (i == selectedIndex)
                         {
@@ -94,7 +81,7 @@ namespace Midterm
                         else
                         {
                             Console.Write("   ");
-                            Console.WriteLine(options[i], Color.Lavender);
+                            Console.WriteLine(options[i], Color.White);
                         }
                     }
 
@@ -114,11 +101,10 @@ namespace Midterm
                     }
                 }
             }
-            
-            
         }
 
-        
+
+
         public static async void ExecuteOption(int index)
         {
            
@@ -136,7 +122,7 @@ namespace Midterm
                     Midterm.Deposit.InsertMoney();
                     break;
                 case 3:
-                    Midterm.FavoritesManager.FavoritesMenu(user.email);
+                    Midterm.FavoritesManager.FavoritesMenu(User.email);
                     break;
                 case 4:
                     Activity.Connection conn = new Activity.Connection();
@@ -148,7 +134,7 @@ namespace Midterm
                     Midterm.updateuser.Changepassword();
                     break;
                 case 6:
-                    Midterm.user.logout();
+                    Midterm.User.Logout();
                     break;
                 
 

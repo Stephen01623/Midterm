@@ -31,7 +31,7 @@ namespace Midterm
                 Console.ReadKey();
 
 
-                Midterm.user.conn = true;
+                Midterm.User.conn = true;
 
             }
             else

@@ -14,7 +14,7 @@ namespace Midterm
         {
             Connection connection = new Connection();
             string email = "charles.bernard.balaguer@student.pnm.edu.ph";
-            if (!Midterm.user.isLoggedIn)
+            if (!Midterm.User.isLoggedIn)
             {
 
                 Console.Write(@"
