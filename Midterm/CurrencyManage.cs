@@ -16,8 +16,8 @@ namespace Midterm
         public static string toCurrency;
         public static string mainCurrency = "TETHER";
         public static string mainCurrencySymbol = "USDT";
+       
         
-
         public static string sellingFromCurrency;
         public static BinanceWebSocketClient client = new BinanceWebSocketClient();
         private static Dictionary<string, float> exchangeRates;
@@ -92,7 +92,7 @@ namespace Midterm
                 Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
                 toCurrency = Console.ReadLine()?.ToUpper();
 
-
+                
 
                 //check if the currency exists
                 if (conn.CheckCurrency(toCurrency))
@@ -109,7 +109,7 @@ namespace Midterm
                     Console.Write("Enter the Amount you want to Buy: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
                    
-                    conn.BuyingCurrency(toCurrency, amount, conn.GetUserId(User.email), conn.GetAssetId(toCurrency));
+                    conn.BuyingCurrency(toCurrency, amount, mainCurrencySymbol, conn.GetUserId(User.email), conn.GetAssetId(toCurrency));
                     break;
                 }
                 else
@@ -145,7 +145,7 @@ namespace Midterm
                     Console.Write("Enter the Amount you want to Sell: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
 
-                    conn.SellCurrency(sellingFromCurrency, amount, conn.GetUserId(User.email), conn.GetAssetId(sellingFromCurrency));
+                    conn.SellCurrency(sellingFromCurrency, mainCurrencySymbol, amount, conn.GetUserId(User.email), conn.GetAssetId(sellingFromCurrency));
                     break;
                 }
                 else

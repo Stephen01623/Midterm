@@ -430,7 +430,7 @@ namespace Activity
             }
             return false;
         }
-        public void BuyingCurrency(string desiredCurrency, float amount, int user_id, int asset_id)
+        public void BuyingCurrency(string desiredCurrency,  float amount, string currency_to_convert, int user_id, int asset_id)
         {
            
             try
@@ -496,7 +496,7 @@ namespace Activity
                                     Console.WriteLine(email);
                                     Console.WriteLine(balance);
 
-                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.fromCurrency, CurrencyManage.toCurrency, action);
+                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.mainCurrencySymbol, desiredCurrency , action);
                                     Console.WriteLine("Saved To History");
                                     
                                 }
@@ -526,7 +526,7 @@ namespace Activity
         // One method for inserting conversion history
         // method for selling currency
         // method for increasing usdt balance
-        public void SellCurrency(string sellingCurrency, float amount, int user_id, int asset_id)
+        public void SellCurrency(string sellingCurrency, string mainCurrency, float amount, int user_id, int asset_id)
         {
             
             try
@@ -581,7 +581,7 @@ namespace Activity
                                     Console.WriteLine(email);
                                     Console.WriteLine(balance);
 
-                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.fromCurrency, CurrencyManage.toCurrency, action);
+                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, sellingCurrency, mainCurrency, action);
                                     Console.WriteLine("Saved To History");
 
                                 }

@@ -128,7 +128,7 @@ namespace Midterm
                     Activity.Connection conn = new Activity.Connection();
                    
 
-                    Midterm.DisplayHistory.DisplayConversions("bernard.amigo.ago@student.pnm.edu.ph");
+                    Midterm.DisplayHistory.DisplayConversions(User.email);
                         break;
                 case 5:
                     Midterm.updateuser.Changepassword();
