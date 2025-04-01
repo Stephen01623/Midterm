@@ -14,6 +14,8 @@ namespace Midterm
         public static float amount_converted;
         public static string fromCurrency;
         public static string toCurrency;
+
+        public static string sellingFromCurrency;
         public static BinanceWebSocketClient client = new BinanceWebSocketClient();
         private static Dictionary<string, float> exchangeRates;
         public static Connection conn = new Connection();
@@ -111,11 +113,35 @@ namespace Midterm
         public static async Task SellCurrency()
         {
             // Currency selling into USDT
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
+
+            Connection connect = new Connection();
+            //Enter the currency to be bought
             Console.WriteLine("Sell Currency ", System.Drawing.Color.Cyan);
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
-            Console.Write("Enter the currency you want to Sell (e.g., DOGE): ", System.Drawing.Color.Yellow);
-            string sellingCurrency = Console.ReadLine()?.ToUpper();
+            while (true)
+            {
+                Console.Write("Enter The CurrencyYou Want to Sell (e.g., BTC): ", System.Drawing.Color.Yellow);
+                sellingFromCurrency = Console.ReadLine()?.ToUpper();
+
+
+
+                //check if the currency exists
+                if (conn.CheckCurrency(sellingFromCurrency))
+                {
+
+                    Console.Write("Enter the Amount you want to Sell: ", System.Drawing.Color.Yellow);
+                    float amount = float.Parse(Console.ReadLine());
+
+                    conn.BuyingCurrency(sellingFromCurrency, amount, conn.GetUserId(user.email), conn.GetAssetId(sellingFromCurrency));
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Currency Does not Exists.");
+                }
+            }
         }
         
     }

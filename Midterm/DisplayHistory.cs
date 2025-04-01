@@ -64,7 +64,7 @@ namespace Midterm
             }
         }
 
-        public static void InsertToHistory(string email, float amount_converted, float balance, string fromCurrency, string toCurrency)
+        public static void InsertToHistory(string email, float amount_converted, float balance, string fromCurrency, string toCurrency, string action)
         {
             Connection connection = new Connection();
             string connectString = connection.GetConnectionString();
@@ -80,7 +80,7 @@ namespace Midterm
 
                     conn.Open();
 
-                    string query = "INSERT INTO conversion_history (email, amount_converted, balance, currency_to_convert, currency_converted_to, date) VALUES (@email, @amount_converted, @balance, @fromCurrency, @toCurrency, @date)";
+                    string query = "INSERT INTO conversion_history (email, amount_converted, balance, currency_to_convert, currency_converted_to, action, date) VALUES (@email, @amount_converted, @balance, @fromCurrency, @toCurrency, @action, @date)";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
@@ -89,6 +89,7 @@ namespace Midterm
                         cmd.Parameters.AddWithValue("@balance", balance);
                         cmd.Parameters.AddWithValue("@fromCurrency", fromCurrency);
                         cmd.Parameters.AddWithValue("@toCurrency", toCurrency);
+                        cmd.Parameters.AddWithValue("@action", action);
                         cmd.Parameters.AddWithValue("@date", DateTime.Now);
                         cmd.ExecuteNonQuery();
                     }

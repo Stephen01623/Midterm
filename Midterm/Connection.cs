@@ -337,7 +337,7 @@ namespace Activity
                     string query = "SELECT asset_id FROM assets WHERE ticker_symbol = @ticker_symbol";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("ticker_symbol", ticker_symbol);
+                        cmd.Parameters.AddWithValue("@ticker_symbol", ticker_symbol);
                         object result = cmd.ExecuteScalar();
 
                         if (result != null)
@@ -345,7 +345,8 @@ namespace Activity
                             assetId = Convert.ToInt32(result);
                             return assetId;
 
-                        } else
+                        }
+                        else
                         {
                             return 0;
                         }
@@ -354,35 +355,81 @@ namespace Activity
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error ", e.Message);
+                Console.WriteLine("Error " +  e.Message);
             }
             return 0;
         }
+
+        public bool CheckHoldings(int user_id, int asset_id)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string selectQuery = "SELECT COUNT(*) FROM holdings WHERE user_id = @user_id AND asset_id = @asset_id";
+
+                    using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@user_id", user_id);
+                        cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        return count > 0;
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error Dito " + e.Message);
+            }
+            return false;
+        }
         public void BuyingCurrency(string desiredCurrency, float amount, int user_id, int asset_id)
         {
+           
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
+                    string query;
                     connection.Open();
-
-                    string query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
-                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    if (CheckHoldings(user_id, asset_id))
                     {
-                        cmd.Parameters.AddWithValue("user_id", user_id);
-                        cmd.Parameters.AddWithValue("asset_id", asset_id);
-                        cmd.Parameters.AddWithValue("quantity", amount);
-                        cmd.Parameters.AddWithValue("ticker_sym", desiredCurrency);
-                        object result = cmd.ExecuteNonQuery();
-                        Console.WriteLine("Currency Successfully Bought");
-                        Console.ReadKey();
+                        query = "UPDATE holdings SET quantity = quantity + @amount WHERE user_id = @user_id AND asset_id = @asset_id";
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@user_id", user_id);
+                            cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                            cmd.Parameters.AddWithValue("@amount", amount);
+                            object result = cmd.ExecuteNonQuery();
+                            Console.WriteLine("Asset Successfully Bought");
+                            Console.ReadKey();
 
-
+                        }
 
                     }
+                    
+                    else
+                    {
+                        query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@user_id", user_id);
+                            cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                            cmd.Parameters.AddWithValue("@quantity", amount);
+                            cmd.Parameters.AddWithValue("@ticker_sym", desiredCurrency);
+                            object result = cmd.ExecuteNonQuery();
+                            Console.WriteLine("Currency Successfully Bought");
+                            Console.ReadKey();
+
+                        }
+                    }
+
+                    
 
                     string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
-
+                    string action = "BUY";
                     using (MySqlCommand cmd = new MySqlCommand(selectQuery, connection))
                     {
                         cmd.Parameters.AddWithValue("@user_Id", user_id);
@@ -404,12 +451,13 @@ namespace Activity
                                     Console.WriteLine(email);
                                     Console.WriteLine(balance);
 
-                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.fromCurrency, CurrencyManage.toCurrency);
+                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.fromCurrency, CurrencyManage.toCurrency, action);
                                     Console.WriteLine("Saved To History");
                                     
                                 }
                                 Console.ReadKey();
                                 DecreaseBalance(email, amount);
+
                             }
                             
                         }
@@ -427,6 +475,28 @@ namespace Activity
                 Console.ReadKey();
             }
             
+        }
+
+
+        // One method for inserting conversion history
+        // method for selling currency
+        // method for increasing usdt balance
+        public void SellCurrency(string desiredCurrency, float amount, int user_id, int asset_id)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    string query = "";
+                  
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                Console.ReadKey();
+            }
+
         }
 
         public void DecreaseBalance(string email, float amount)
