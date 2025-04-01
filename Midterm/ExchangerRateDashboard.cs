@@ -107,12 +107,13 @@ namespace Midterm
 
         public static async void ExecuteOption(int index)
         {
-           
+            index = 0;
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
             Console.Clear();
             switch (index)
             {
                 case 0:
-                    Midterm.ExchangeCaller.Call();
+                    client.StartAsync();
                     break;
                 case 1:
                     //ManageAsset manage = new ManageAsset();
@@ -125,9 +126,6 @@ namespace Midterm
                     Midterm.FavoritesManager.FavoritesMenu(User.email);
                     break;
                 case 4:
-                    Activity.Connection conn = new Activity.Connection();
-                   
-
                     Midterm.DisplayHistory.DisplayConversions(User.email);
                         break;
                 case 5:
