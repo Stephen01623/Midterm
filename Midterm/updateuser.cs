@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Activity;
-
+using Console = Colorful.Console;
 namespace Midterm
 {
     class updateuser
@@ -13,8 +14,12 @@ namespace Midterm
         public static void Changepassword()
         {
 
-
+            Console.WriteLine(@"
+░█▀▀░█░█░█▀█░█▀█░█▀▀░█▀▀░░░█▀█░█▀█░█▀▀░█▀▀░█░█░█▀█░█▀▄░█▀▄
+░█░░░█▀█░█▀█░█░█░█░█░█▀▀░░░█▀▀░█▀█░▀▀█░▀▀█░█▄█░█░█░█▀▄░█░█
+░▀▀▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀░░░▀░░░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀░", Color.AliceBlue);
             Connection conn = new Connection();
+           Console.SetCursorPosition(5, 10);
             Console.WriteLine("Enter Email");
             string email = Console.ReadLine();
             Console.WriteLine("Enter old Password");
