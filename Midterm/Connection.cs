@@ -138,7 +138,7 @@ namespace Activity
                         cmd.Parameters.AddWithValue("@email", email);
                         cmd.ExecuteNonQuery();
 
-                    }
+                    } 
                 }
                 Console.WriteLine("Balance Deposited Successfully!");
                 
@@ -188,11 +188,11 @@ namespace Activity
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "INSERT INTO favorites (email, favorites) VALUES (@email, @favorites)";
+                    string query = "INSERT INTO favorites (email, favorite_currency) VALUES (@email, @favorites)";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@email", email);
-                        cmd.Parameters.AddWithValue("@favorites", favorite);
+                        cmd.Parameters.AddWithValue("@favorite_currency", favorite);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -205,7 +205,7 @@ namespace Activity
             }
         }
 
-        public List<string> GetFavorites(string email)
+        public void GetFavorites(string email)
         {
             List<string> favorites = new List<string>();
 
@@ -214,7 +214,7 @@ namespace Activity
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT favorites FROM favorites WHERE email = @Email";
+                    string query = "SELECT favorite_currency FROM favorites WHERE email = @Email";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@Email", email);
@@ -222,7 +222,18 @@ namespace Activity
                         {
                             while (reader.Read())
                             {
-                                favorites.Add(reader.GetString("favorites"));
+                                string fetchedFavorites = reader.GetString("favorite_currency");
+                                string[] parts = fetchedFavorites.Split(new string[] { " - " }, StringSplitOptions.None);
+                            
+                                foreach (string part in parts)
+                                {
+                                    FavoritesManager.listOfFavorites.Add(part);
+                                    //Console.WriteLine(FavoritesManager.listOfFavorites.ToString());
+
+                                    
+                                }
+ 
+                               
                             }
                         }
                     }
@@ -233,7 +244,7 @@ namespace Activity
                 Console.WriteLine("Error: " + ex.Message, Color.Red);
             }
 
-            return favorites;
+           
         }
 
 
@@ -244,7 +255,7 @@ namespace Activity
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "DELETE FROM favorites WHERE email = @Email AND favorites = @Favorite";
+                    string query = "DELETE FROM favorites WHERE email = @Email AND favorite_currency = @Favorite";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@Email", email);
@@ -269,6 +280,40 @@ namespace Activity
         }
 
 
+        public void DisplayCurrencies()
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM assets";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.HasRows)
+                            {
+                                Console.WriteLine("No records found.");
+                                return;
+                            }
+
+                            while (reader.Read())
+                            {
+
+                                Console.WriteLine($@"{reader["asset_name"]} ({reader["ticker_symbol"]}) To {CurrencyManage.mainCurrency} ({CurrencyManage.mainCurrencySymbol})");
+
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message, Color.Red);
+            }
+        }
         public bool CheckCurrency(string ticker)
         {
             try
@@ -456,7 +501,7 @@ namespace Activity
                                     
                                 }
                                 Console.ReadKey();
-                                DecreaseBalance(email, amount);
+                                UpdateBalance(email, amount, action);
 
                             }
                             
@@ -481,15 +526,79 @@ namespace Activity
         // One method for inserting conversion history
         // method for selling currency
         // method for increasing usdt balance
-        public void SellCurrency(string desiredCurrency, float amount, int user_id, int asset_id)
+        public void SellCurrency(string sellingCurrency, float amount, int user_id, int asset_id)
         {
+            
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    string query = "";
-                  
+                    conn.Open();
+                    string query = "UPDATE holdings SET quantity = quantity - @amount WHERE user_id = @user_id AND asset_id = @asset_id";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@amount", amount);
+                        cmd.Parameters.AddWithValue("@user_id", user_id);
+                        cmd.Parameters.AddWithValue("@asset_id", asset_id);
+
+                        object result = cmd.ExecuteNonQuery();
+
+
+
+                        if (result == null)
+                        {
+                            return;
+                        }
+                        
+
+
+                        Console.WriteLine("Asset Sold Successfully!");
+                        Console.ReadKey();
+                    }
+
+                    string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
+                    string action = "SELL";
+                    using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@user_Id", user_id);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            string email = "charles.bernard.balaguer@student.pnm.edu.ph";
+                            if (!reader.HasRows)
+                            {
+                                Console.WriteLine("No records found.");
+                                return;
+                            }
+                            else
+                            {
+                                while (reader.Read())
+                                {
+                                    int id = reader.GetInt32("id");
+                                    email = reader.GetString("email");
+                                    float balance = reader.GetFloat("balance");
+                                    Console.WriteLine(id);
+                                    Console.WriteLine(email);
+                                    Console.WriteLine(balance);
+
+                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.fromCurrency, CurrencyManage.toCurrency, action);
+                                    Console.WriteLine("Saved To History");
+
+                                }
+                                Console.ReadKey();
+                               UpdateBalance(email, amount, action);
+
+                            }
+
+                        }
+
+
+
+                    }
+
                 }
+
+
             }
             catch (Exception e)
             {
@@ -499,15 +608,24 @@ namespace Activity
 
         }
 
-        public void DecreaseBalance(string email, float amount)
+        public void UpdateBalance(string email, float amount, string action)
         {
             int newAmount = Convert.ToInt32(amount);
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
+                    string query;
                     conn.Open();
-                    string query = "UPDATE users SET balance = balance - @amount WHERE email = @email";
+                    if(action == "BUY")
+                    {
+                         query = "UPDATE users SET balance = balance - @amount WHERE email = @email";
+
+                    }else
+                    {
+                        query = "UPDATE users SET balance = balance + @amount WHERE email = @email";
+
+                    }
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@amount", newAmount);
