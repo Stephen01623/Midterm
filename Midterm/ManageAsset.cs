@@ -12,13 +12,14 @@ namespace Midterm
 {
     class ManageAsset
     {
+       
         public static int selectedIndex = 0;
         
         public static float balance = 0;
         public static async Task ManageAssetDashboard()
         {
-            Connection connection = new Connection();
-            balance = connection.GetBalance("charles.bernard.balaguer@student.pnm.edu.ph");
+            //Connection connection = new Connection();
+            //balance = connection.GetBalance("charles.bernard.balaguer@student.pnm.edu.ph");
             while (true)
             {
                 Console.Clear();
@@ -60,7 +61,7 @@ namespace Midterm
                     }
 
                     Console.SetCursorPosition(boxX, boxY + boxHeight - 1);
-                    Console.Write("╚" + new string('═', boxWidth - 2) + "╝");
+                    Console.Write("╚" + new string('═', boxWidth - 2) + "╝"); //ano yon kapag may key na pinindot?
 
 
                     string[] bannerLines = banner.Split('\n');

@@ -104,6 +104,7 @@ namespace Midterm
         public static async void ExecuteOption(int index)
         {
             BinanceWebSocketClient client = new BinanceWebSocketClient();
+
             Console.Clear();
             switch (index)
             {

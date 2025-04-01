@@ -45,7 +45,6 @@ namespace Activity
                         cmd.ExecuteNonQuery();
                     }
                 }
-                Console.WriteLine("Data inserted successfully!");
             }
             catch (Exception ex)
             {
