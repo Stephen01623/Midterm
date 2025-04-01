@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Activity;
 
 namespace Midterm
@@ -7,16 +8,25 @@ namespace Midterm
     {
         static async Task Main()
         {
-            //Midterm.Loading.ShowLoadingScreen();
-            //BinanceWebSocketClient client = new BinanceWebSocketClient();
+            
+            Midterm.Loading.ShowLoadingScreen();
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
-            ExchangerRateDashboard.ExchangeDashboard();
+            //ExchangerRateDashboard.ExchangeDashboard();
 
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();
 
             //Connection conn = new Connection();
+           
+
+           
+
+            
+            
+
         }
     }
-}
+    }
+
