@@ -124,9 +124,6 @@ namespace Midterm
                         Console.WriteLine("Invalid choice. Try again.", Color.Red);
                         break;
                 }
-
-                Console.WriteLine("\nPress any key to continue...");
-                Console.ReadKey();
             }
         }
     }

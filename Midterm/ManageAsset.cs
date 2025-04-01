@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Activity;
 using Console = Colorful.Console;
 
 namespace Midterm
@@ -12,9 +13,12 @@ namespace Midterm
     class ManageAsset
     {
         public static int selectedIndex = 0;
-        public static decimal balance = 0;
+        
+        public static float balance = 0;
         public static async Task ManageAssetDashboard()
         {
+            Connection connection = new Connection();
+            balance = connection.GetBalance("charles.bernard.balaguer@student.pnm.edu.ph");
             while (true)
             {
                 Console.Clear();
@@ -29,7 +33,7 @@ namespace Midterm
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝   ╚═╝ 
 
 
-    Available Balance: {balance}
+    Available Balance: {balance} USDT
 ";
 
                 string[] options = ["Buy", "Sell", "Swap", "Back"];
@@ -127,12 +131,10 @@ namespace Midterm
                     break;
                 
             }
-
-            Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
-            Console.ReadKey();
-
+            await ManageAssetDashboard();
         }
+       
     }
-    }
+}
 
 

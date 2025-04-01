@@ -12,8 +12,9 @@ namespace Midterm
     class CurrencyManage
     {
         public static float amount_converted;
-        public static string currency;
-        private BinanceWebSocketClient client;
+        public static string fromCurrency;
+        public static string toCurrency;
+        public static BinanceWebSocketClient client = new BinanceWebSocketClient();
         private static Dictionary<string, float> exchangeRates;
         public static Connection conn = new Connection();
         public CurrencyManage()
@@ -21,6 +22,7 @@ namespace Midterm
             client = new BinanceWebSocketClient();
             exchangeRates = new Dictionary<string, float>();
         }
+        
 
         public async Task Initialize()
         {
@@ -36,10 +38,10 @@ namespace Midterm
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
             Console.Write("Enter the currency you want to swap (e.g., USDT): ", System.Drawing.Color.Yellow);
-            string fromCurrency = Console.ReadLine()?.ToUpper();
+            fromCurrency = Console.ReadLine()?.ToUpper();
 
             Console.Write("Enter the currency you want to receive (e.g., BTC): ", System.Drawing.Color.Yellow);
-            string toCurrency = Console.ReadLine()?.ToUpper();
+            toCurrency = Console.ReadLine()?.ToUpper();
 
             Console.Write($"Enter the amount of {fromCurrency} you want to swap: ", System.Drawing.Color.Yellow);
             if (!float.TryParse(Console.ReadLine(), out float amount))
@@ -67,6 +69,9 @@ namespace Midterm
 
         public static async Task BuyCurrency()
         {
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
+           
+            Connection connect = new Connection();
             //Enter the currency to be bought
             Console.WriteLine("Buy Currency ", System.Drawing.Color.Cyan);
             Console.WriteLine("===================================", System.Drawing.Color.White);
@@ -74,16 +79,26 @@ namespace Midterm
             while(true)
             {
                 Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
-                string fromCurrency = Console.ReadLine()?.ToUpper();
+                toCurrency = Console.ReadLine()?.ToUpper();
+
+
 
                 //check if the currency exists
-
-                if (conn.CheckCurrency(fromCurrency))
+                if (conn.CheckCurrency(toCurrency))
                 {
+                    
+                    foreach (var pair in client.getPairs())
+                    {
+                        Console.WriteLine($"| {pair.ToUpper(),-10} | |");
+                    }
+                    foreach (var table in client.GetTablePricing())
+                    {
+                        Console.WriteLine(table.ToString());
+                    }
                     Console.Write("Enter the Amount you want to Buy: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
                    
-                    //Connection.BuyingCurrency(fromCurrency, amount);
+                    conn.BuyingCurrency(toCurrency, amount, conn.GetUserId(user.email), conn.GetAssetId(toCurrency));
                     break;
                 }
                 else
@@ -91,7 +106,7 @@ namespace Midterm
                     Console.WriteLine("Currency Does not Exists.");
                 }
             }
-           
+
         }
         public static async Task SellCurrency()
         {
@@ -102,5 +117,6 @@ namespace Midterm
             Console.Write("Enter the currency you want to Sell (e.g., DOGE): ", System.Drawing.Color.Yellow);
             string sellingCurrency = Console.ReadLine()?.ToUpper();
         }
+        
     }
 }

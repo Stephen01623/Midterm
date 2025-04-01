@@ -7,19 +7,16 @@ namespace Midterm
     {
         static async Task Main()
         {
-            //Midterm.Loading.ShowLoadingScreen();
+              //Midterm.Loading.ShowLoadingScreen();
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
-            //ExchangerRateDashboard.ExchangeDashboard();
+            ExchangerRateDashboard.ExchangeDashboard();
 
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();
 
             Connection conn = new Connection();
-
-            conn.GetAssetId("SOL");
-
         }
     }
 }

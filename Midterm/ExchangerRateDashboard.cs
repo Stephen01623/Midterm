@@ -140,9 +140,9 @@ namespace Midterm
                     break;
                 case 4:
                     Activity.Connection conn = new Activity.Connection();
-                    Midterm.DisplayHistory.InsertToHistory(user.email, CurrencyManage.amount_converted, conn.GetBalance(user.email), CurrencyManage.currency);
+                   
 
-                    Midterm.DisplayHistory.DisplayConversions("charles.bernard.balaguer@student.pnm.edu.ph");
+                    Midterm.DisplayHistory.DisplayConversions("bernard.amigo.ago@student.pnm.edu.ph");
                         break;
                 case 5:
                     Midterm.updateuser.Changepassword();

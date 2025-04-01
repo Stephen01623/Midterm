@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Drawing;
 using Console = Colorful.Console;
+using Midterm;
 namespace Activity
 {
     class Connection
@@ -165,12 +166,18 @@ namespace Activity
                 {
                     cmd.Parameters.AddWithValue("@email", email);
                     object result = cmd.ExecuteScalar();
-            
+
+                    if (result != null)
+                    {
+                        balance = Convert.ToInt32(result);
+                        return balance;
+                    }
+                    
                    
                 }
             }
 
-            return balance;
+            return 0;
         }
 
 
@@ -289,9 +296,9 @@ namespace Activity
             return false;
         }
 
-        public void GetUserId(string email)
+        public int GetUserId(string email)
         {
-           
+            email = "charles.bernard.balaguer@student.pnm.edu.ph";
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -307,7 +314,7 @@ namespace Activity
                         if (result != null)
                         {
                             userId = Convert.ToInt32(result);
-                            Console.WriteLine(userId);
+                            return userId;
                         }
                     }
                 }
@@ -316,8 +323,9 @@ namespace Activity
             {
                 Console.WriteLine("Error ", e.Message);
             }
+            return 0;
         }
-        public void GetAssetId(string ticker_symbol)
+        public int GetAssetId(string ticker_symbol)
         {
 
             try
@@ -335,7 +343,11 @@ namespace Activity
                         if (result != null)
                         {
                             assetId = Convert.ToInt32(result);
-                            Console.WriteLine(assetId);
+                            return assetId;
+
+                        } else
+                        {
+                            return 0;
                         }
                     }
                 }
@@ -344,8 +356,9 @@ namespace Activity
             {
                 Console.WriteLine("Error ", e.Message);
             }
+            return 0;
         }
-        public void BuyingCurrency(string desiredCurrency, float amount)
+        public void BuyingCurrency(string desiredCurrency, float amount, int user_id, int asset_id)
         {
             try
             {
@@ -353,12 +366,92 @@ namespace Activity
                 {
                     connection.Open();
 
-                    string query = "INSERT INTO holdings ";
+                    string query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("user_id", user_id);
+                        cmd.Parameters.AddWithValue("asset_id", asset_id);
+                        cmd.Parameters.AddWithValue("quantity", amount);
+                        cmd.Parameters.AddWithValue("ticker_sym", desiredCurrency);
+                        object result = cmd.ExecuteNonQuery();
+                        Console.WriteLine("Currency Successfully Bought");
+                        Console.ReadKey();
+
+
+
+                    }
+
+                    string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
+
+                    using (MySqlCommand cmd = new MySqlCommand(selectQuery, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@user_Id", user_id);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            string email = "charles.bernard.balaguer@student.pnm.edu.ph";
+                            if (!reader.HasRows)
+                            {
+                                Console.WriteLine("No records found.");
+                                return;
+                            } else
+                            {
+                                while (reader.Read())
+                                {
+                                    int id = reader.GetInt32("id");
+                                    email = reader.GetString("email");
+                                    float balance = reader.GetFloat("balance");
+                                    Console.WriteLine(id);
+                                    Console.WriteLine(email);
+                                    Console.WriteLine(balance);
+
+                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.fromCurrency, CurrencyManage.toCurrency);
+                                    Console.WriteLine("Saved To History");
+                                    
+                                }
+                                Console.ReadKey();
+                                DecreaseBalance(email, amount);
+                            }
+                            
+                        }
+                           
+                        
+
+                    }
+                
                 }
+                Console.WriteLine($"Successfully Bought The {desiredCurrency}");
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error ", e.Message);
+                Console.WriteLine("Error " + e.Message);
+                Console.ReadKey();
+            }
+            
+        }
+
+        public void DecreaseBalance(string email, float amount)
+        {
+            int newAmount = Convert.ToInt32(amount);
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE users SET balance = balance - @amount WHERE email = @email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@amount", newAmount);
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.ExecuteNonQuery();
+                        
+
+                    }
+                }Console.WriteLine("Balance Updated Successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                Console.ReadKey();
             }
             
         }

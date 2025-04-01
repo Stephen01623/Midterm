@@ -24,15 +24,16 @@ namespace Midterm
                 {
                     
                     conn.Open();
+                    email = "bernard.amigo.ago@student.pnm.edu.ph";
 
                     //string query = "SELECT * FROM conversion_history WHERE email = @email";
                     //string query = "SELECT from_currency, to_currency, amount, converted_amount, conversion_date FROM conversion_history WHERE user_id=@userId ORDER BY conversion_date DESC";
 
-                    string query = "SELECT * from conversion_history";
+                    string query = "SELECT * from conversion_history WHERE email = @email";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {   
                         
-                        //cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@email", email);
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (!reader.HasRows)
@@ -47,7 +48,8 @@ namespace Midterm
                                 Console.WriteLine("ID: " + reader["id"]);
                                 Console.WriteLine("Email: " + reader["email"]);
                                 Console.WriteLine("Balance: " + reader["balance"]);
-                                Console.WriteLine("Currency: " + reader["currency"]);
+                                Console.WriteLine("Currency To Convert: " + reader["currency_to_convert"]);
+                                Console.WriteLine("Currency Converted to: " + reader["currency_converted_to"]);
                                 Console.WriteLine("Created At: " + reader["date"]);
                                 Console.WriteLine("----------------------------------");
                             }
@@ -62,7 +64,7 @@ namespace Midterm
             }
         }
 
-        public static void InsertToHistory(string email, float amount_converted, float balance, string currency)
+        public static void InsertToHistory(string email, float amount_converted, float balance, string fromCurrency, string toCurrency)
         {
             Connection connection = new Connection();
             string connectString = connection.GetConnectionString();
@@ -70,27 +72,26 @@ namespace Midterm
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connectString))
-                {
-                    email = "charles.bernard.balaguer.@student.pnm.edu.ph";
+                    {
+                    email = "bernard.amigo.ago@student.pnm.edu.ph";
                     amount_converted = 100.00f;
-                    currency = "BTCUSDT";
+                    fromCurrency = "USDT";
+                    toCurrency = "BTC";
 
                     conn.Open();
 
-                    string query = "INSERT INTO conversion_history (email, amount_converted, balance, currency, date) VALUES (@email, @amount_converted, @balance, @currency, @date)";
+                    string query = "INSERT INTO conversion_history (email, amount_converted, balance, currency_to_convert, currency_converted_to, date) VALUES (@email, @amount_converted, @balance, @fromCurrency, @toCurrency, @date)";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@email", email.ToLower());
                         cmd.Parameters.AddWithValue("@amount_converted", amount_converted);
                         cmd.Parameters.AddWithValue("@balance", balance);
-                        cmd.Parameters.AddWithValue("@currency", currency);
+                        cmd.Parameters.AddWithValue("@fromCurrency", fromCurrency);
+                        cmd.Parameters.AddWithValue("@toCurrency", toCurrency);
                         cmd.Parameters.AddWithValue("@date", DateTime.Now);
                         cmd.ExecuteNonQuery();
-
-                        Console.WriteLine(@"View History");
                     }
-
                 }
             }
             catch (Exception ex)
@@ -100,7 +101,6 @@ namespace Midterm
             }
 
         }
-
 
     }
 }
