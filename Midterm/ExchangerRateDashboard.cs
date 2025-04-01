@@ -17,6 +17,7 @@ namespace Midterm
             ExchangeDashboard();
         }
 
+
         public static int selectedIndex = 0;
         public async static Task ExchangeDashboard()
         {
@@ -46,7 +47,7 @@ namespace Midterm
 ";
 
                 string[] options = ["Spot", "Trade", "Deposit", "Add Favorites", "View Conversion History", "Change Password", "Logout"];
-                 selectedIndex = 0;
+                 
 
 
                 int boxWidth = banner.Split('\n')[1].Length + 4;
@@ -139,11 +140,8 @@ namespace Midterm
                     Midterm.FavoritesManager.FavoritesMenu(user.email);
                     break;
                 case 4:
-                    Activity.Connection conn = new Activity.Connection();
-                   
-
-                    Midterm.DisplayHistory.DisplayConversions("bernard.amigo.ago@student.pnm.edu.ph");
-                        break;
+                    Midterm.DisplayHistory.DisplayConversions(user.email);
+                     break;
                 case 5:
                     Midterm.updateuser.Changepassword();
                     break;
@@ -157,7 +155,8 @@ namespace Midterm
 
             Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
             Console.ReadKey();
-            await ExchangeDashboard();
+             
+            await ExchangeDashboard ();
 
         }
 

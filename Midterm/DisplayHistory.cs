@@ -24,7 +24,7 @@ namespace Midterm
                 {
                     
                     conn.Open();
-                    email = "bernard.amigo.ago@student.pnm.edu.ph";
+                    
 
                     //string query = "SELECT * FROM conversion_history WHERE email = @email";
                     //string query = "SELECT from_currency, to_currency, amount, converted_amount, conversion_date FROM conversion_history WHERE user_id=@userId ORDER BY conversion_date DESC";
@@ -73,11 +73,7 @@ namespace Midterm
             {
                 using (MySqlConnection conn = new MySqlConnection(connectString))
                     {
-                    email = "bernard.amigo.ago@student.pnm.edu.ph";
-                    amount_converted = 100.00f;
-                    fromCurrency = "USDT";
-                    toCurrency = "BTC";
-
+                    
                     conn.Open();
 
                     string query = "INSERT INTO conversion_history (email, amount_converted, balance, currency_to_convert, currency_converted_to, action, date) VALUES (@email, @amount_converted, @balance, @fromCurrency, @toCurrency, @action, @date)";

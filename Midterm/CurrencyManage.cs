@@ -14,6 +14,9 @@ namespace Midterm
         public static float amount_converted;
         public static string fromCurrency;
         public static string toCurrency;
+        public static string mainCurrency = "TETHER";
+        public static string mainCurrencySymbol = "USDT";
+        
 
         public static string sellingFromCurrency;
         public static BinanceWebSocketClient client = new BinanceWebSocketClient();
@@ -34,11 +37,13 @@ namespace Midterm
 
         public static async Task SwapCurrency()
         {
-          
+            Connection connect = new Connection();
+            
             Console.Clear();
             Console.WriteLine("Swap Currency ", System.Drawing.Color.Cyan);
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
+            connect.DisplayCurrencies();
             Console.Write("Enter the currency you want to swap (e.g., USDT): ", System.Drawing.Color.Yellow);
             fromCurrency = Console.ReadLine()?.ToUpper();
 
@@ -74,8 +79,12 @@ namespace Midterm
             BinanceWebSocketClient client = new BinanceWebSocketClient();
            
             Connection connect = new Connection();
+
+
             //Enter the currency to be bought
             Console.WriteLine("Buy Currency ", System.Drawing.Color.Cyan);
+            connect.DisplayCurrencies();
+
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
             while(true)
@@ -118,6 +127,8 @@ namespace Midterm
             Connection connect = new Connection();
             //Enter the currency to be bought
             Console.WriteLine("Sell Currency ", System.Drawing.Color.Cyan);
+
+            connect.DisplayCurrencies();
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
             while (true)
@@ -134,7 +145,7 @@ namespace Midterm
                     Console.Write("Enter the Amount you want to Sell: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
 
-                    conn.BuyingCurrency(sellingFromCurrency, amount, conn.GetUserId(user.email), conn.GetAssetId(sellingFromCurrency));
+                    conn.SellCurrency(sellingFromCurrency, amount, conn.GetUserId(user.email), conn.GetAssetId(sellingFromCurrency));
                     break;
                 }
                 else

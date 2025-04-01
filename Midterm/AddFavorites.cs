@@ -6,84 +6,163 @@ using System.Threading.Tasks;
 using System.Drawing;
 using Console = Colorful.Console;
 using Activity;
+using MySql.Data.MySqlClient;
 namespace Midterm
 {
     class FavoritesManager
     {
+        public static Connection connection = new Connection();
+
+        public static List<string> listOfFavorites = new List<string>();
+
+        //public static MySqlConnection conn = new MySqlConnection(connection.GetConnectionString());
+        
+        
+        public static bool CheckFavorites(string favoriteCurrency, string email)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connection.GetConnectionString()))
+                {
+                    conn.Open();
+                    string query = "SELECT favorite_currency FROM favorites WHERE email = @email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string listOfFavorites = reader.GetString("favorite_currency");
+                                Console.WriteLine(listOfFavorites);
+
+                                string[] parts = listOfFavorites.Split(new string[] { " - " }, StringSplitOptions.None);
+                                foreach (string part in parts)
+                                {
+                                    if(part == favoriteCurrency.ToUpper())
+                                    {
+                                        Console.WriteLine("You Already Added this In your Favorites List");
+                                        return false;
+                                    }
+                                    
+                                }
+                                Console.ReadKey();
+                                
+                            } 
+                        }         
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error" + ex.Message);
+            }
+            return true;
+
+        }
+        public static void UpdateFavorites(string favoriteCurrency, string email)
+        {
+            favoriteCurrency = favoriteCurrency.ToUpper();
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connection.GetConnectionString()))
+                {
+                    conn.Open();
+                    string query = "UPDATE favorites SET favorite_currency = CONCAT(favorite_currency, @favoriteCurrency) WHERE email = @email";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@favoriteCurrency", " - "+favoriteCurrency);
+                        cmd.Parameters.AddWithValue("@email", email);
+                        int rowsAffected = Convert.ToInt32(cmd.ExecuteNonQuery());
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("\nSuccessfully Updated");
+                            Console.ReadKey();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Error: " + ex.Message);
+                Console.ReadKey();
+            }
+        }
         public static void AddFavoritePair(string userEmail)
         {
             Connection connection = new Connection();
             BinanceWebSocketClient client = new BinanceWebSocketClient();
             Console.WriteLine("List of Available Pairs\n\n");
 
-            foreach (var pair in client.getPairs())
-            {
-                Console.WriteLine(pair, Color.Blue);
-            }
+            connection.DisplayCurrencies();
 
             while (true)
             {
-                bool found = false;
-                Console.Write("Enter Your Favorite Exchange: ", Color.Green);
-                string enteredPair = Console.ReadLine();
+                
+                Console.Write("Enter Your Favorite Currency To pair With USDT: ", Color.Green);
+                string favoriteCurrency = Console.ReadLine();
 
-                foreach (var pair in client.getPairs())
+                if (connection.CheckCurrency(favoriteCurrency))
                 {
-                    if (pair == enteredPair)
+                    if (CheckFavorites(favoriteCurrency, user.email))
                     {
-                        found = true;
-                        connection.InsertFavorites(enteredPair, userEmail);
+                        UpdateFavorites(favoriteCurrency, userEmail);
                         Console.WriteLine("Entered Pair Successfully Stored.", Color.Yellow);
                         return;
                     }
-                }
-
-                if (!found)
+                   
+                } else
                 {
                     Console.WriteLine("\n\nPair Does Not Exist.", Color.Red);
-                }
+                }            
+                   
             }
         }
-
         public static void ViewFavorites(string userEmail)
         {
             Connection connection = new Connection();
-            List<string> favorites = connection.GetFavorites(userEmail);
-
+            connection.GetFavorites(userEmail);
             Console.WriteLine("\nYour Favorite Pairs:\n", Color.Cyan);
-            if (favorites.Count == 0)
+            if (listOfFavorites.Count == 0)
             {
                 Console.WriteLine("No favorite pairs found.", Color.Red);
                 return;
             }
-
-            foreach (var pair in favorites)
+            Console.WriteLine("Fetching Data\n");
+            Thread.Sleep(2000);
+            foreach (var part in listOfFavorites)
             {
-                Console.WriteLine(pair, Color.Green);
+                Console.WriteLine(part);
             }
+
+            Console.ReadKey();
+
         }
 
         public static void DeleteFavorite(string userEmail)
         {
             Connection connection = new Connection();
-            List<string> favorites = connection.GetFavorites(userEmail);
+            //List<string> favorites = connection.GetFavorites(userEmail);
 
-            if (favorites.Count == 0)
+            if (listOfFavorites.Count == 0)
             {
                 Console.WriteLine("No favorite pairs to delete.", Color.Red);
                 return;
             }
 
             Console.WriteLine("\nYour Favorite Pairs:\n", Color.Cyan);
-            foreach (var pair in favorites)
+            foreach (var part in listOfFavorites)
             {
-                Console.WriteLine(pair, Color.Green);
+                Console.WriteLine(part, Color.Green);
             }
 
             Console.Write("Enter the pair to remove: ", Color.Yellow);
             string pairToDelete = Console.ReadLine();
 
-            if (favorites.Contains(pairToDelete))
+            if (listOfFavorites.Contains(pairToDelete))
             {
                 connection.DeleteFavorite(pairToDelete, userEmail);
                 Console.WriteLine("Favorite pair removed successfully.", Color.Yellow);

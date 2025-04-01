@@ -37,7 +37,7 @@ namespace Midterm
 ";
 
                 string[] options = ["Buy", "Sell", "Swap", "Back"];
-                selectedIndex = 0;
+                
 
 
                 int boxWidth = banner.Split('\n')[1].Length + 4;
@@ -131,7 +131,7 @@ namespace Midterm
                     break;
                 
             }
-            await ManageAssetDashboard();
+            _= ManageAssetDashboard();
         }
        
     }
