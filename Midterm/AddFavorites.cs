@@ -107,7 +107,7 @@ namespace Midterm
 
                 if (connection.CheckCurrency(favoriteCurrency))
                 {
-                    if (CheckFavorites(favoriteCurrency, user.email))
+                    if (CheckFavorites(favoriteCurrency, userEmail))
                     {
                         UpdateFavorites(favoriteCurrency, userEmail);
                         Console.WriteLine("Entered Pair Successfully Stored.", Color.Yellow);

@@ -145,7 +145,7 @@ namespace Midterm
                     Console.Write("Enter the Amount you want to Sell: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
 
-                    conn.SellCurrency(sellingFromCurrency, amount, conn.GetUserId(user.email), conn.GetAssetId(sellingFromCurrency));
+                    conn.SellCurrency(sellingFromCurrency, amount, conn.GetUserId(User.email), conn.GetAssetId(sellingFromCurrency));
                     break;
                 }
                 else
