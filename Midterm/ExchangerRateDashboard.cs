@@ -113,7 +113,7 @@ namespace Midterm
             switch (index)
             {
                 case 0:
-                    client.StartAsync();
+                    ExchangeCaller.Call();
                     break;
                 case 1:
                     //ManageAsset manage = new ManageAsset();

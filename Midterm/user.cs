@@ -16,8 +16,8 @@ namespace Midterm
         public static bool isLoggedIn = false;
         public static Connection con = new Connection();
         public static bool conn = false;
-        public static string email;
-
+        public static string email = "charles.bernard.balaguer@student.pnm.edu.ph";
+        //charles.bernard.balaguer@student.pnm.edu.ph
         public static void DrawBox(int x, int y, int width, int height)
         {
             Console.SetCursorPosition(x, y);

@@ -81,7 +81,7 @@ class BinanceWebSocketClient
 
                         UpdatePriceTable(message);
                         DisplayPriceTable(); // Print all prices at once
-                        Console.WriteLine(displayCount);
+                        
                         
                         displayCount++;
                     }
@@ -90,7 +90,10 @@ class BinanceWebSocketClient
                     { 
                         Console.ReadKey();
                         ExchangerRateDashboard.selectedIndex = 0;
-                        connect.UpdateAssetRate(GetTablePricing());          
+                       connect.UpdateAssetRate(GetTablePricing());
+
+                       
+                       
                     }
 
 
