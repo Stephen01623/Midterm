@@ -34,10 +34,7 @@ namespace Midterm
             Console.WriteLine();
             return password;
         }
-      public static void HashPasswrod(string password)
-        {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-        }
+    
 
         public static void passwordlenght(string password)
         {
