@@ -9,11 +9,11 @@ namespace Midterm
         static async Task Main()
         {
 
-            //Midterm.Loading.ShowLoadingScreen();
-            BinanceWebSocketClient client = new BinanceWebSocketClient();
+            Midterm.Loading.ShowLoadingScreen();
+            //BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
-            ExchangerRateDashboard.ExchangeDashboard();
+            //ExchangerRateDashboard.ExchangeDashboard();
             //Midterm.updateuser.Changepassword();
 
             //await client.StartAsync();
