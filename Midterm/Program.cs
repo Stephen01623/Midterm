@@ -10,7 +10,7 @@ namespace Midterm
         {
 
             //Midterm.Loading.ShowLoadingScreen();
-            //BinanceWebSocketClient client = new BinanceWebSocketClient();
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
             ExchangerRateDashboard.ExchangeDashboard();
@@ -21,11 +21,6 @@ namespace Midterm
 
             //Connection conn = new Connection();
             //Midterm.ExchangerRateDashboard.EnterDashboard();
-
-
-
-
-
         }
     }
     }

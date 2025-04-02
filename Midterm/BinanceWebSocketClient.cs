@@ -32,7 +32,6 @@ class BinanceWebSocketClient
 
     public Dictionary<string, float> GetTablePricing()
     {
-        
         return TablePricing;
     }
 

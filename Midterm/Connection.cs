@@ -171,8 +171,6 @@ namespace Activity
                         {
 
                             balance = Convert.ToInt32(result);
-                            Console.WriteLine(balance);
-                            
                             return balance;
                             
                         } else
@@ -455,89 +453,103 @@ namespace Activity
         }
         public void BuyingCurrency(string desiredCurrency,  float amount, string currency_to_convert, int user_id, int asset_id)
         {
-           
-            try
+            float calculatedAmount = amount / CurrencyManage.GetRate(desiredCurrency);
+            Console.WriteLine($@"
+You will Get {calculatedAmount} Worth of {desiredCurrency}
+Confirm? (y/n) ");
+            string confirm = Console.ReadLine();
+
+            if (confirm == "y" || confirm == "Y")
             {
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                try
                 {
-                    string query;
-                    connection.Open();
-                    if (CheckHoldings(user_id, asset_id))
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
-                        query = "UPDATE holdings SET quantity = quantity + @amount WHERE user_id = @user_id AND asset_id = @asset_id";
-                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        string query;
+                        connection.Open();
+                        if (CheckHoldings(user_id, asset_id))
                         {
-                            cmd.Parameters.AddWithValue("@user_id", user_id);
-                            cmd.Parameters.AddWithValue("@asset_id", asset_id);
-                            cmd.Parameters.AddWithValue("@amount", amount);
-                            object result = cmd.ExecuteNonQuery();
-                            Console.WriteLine("Asset Successfully Bought");
-                            Console.ReadKey();
-
-                        }
-
-                    }
-                    
-                    else
-                    {
-                        query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
-                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                        {
-                            cmd.Parameters.AddWithValue("@user_id", user_id);
-                            cmd.Parameters.AddWithValue("@asset_id", asset_id);
-                            cmd.Parameters.AddWithValue("@quantity", amount);
-                            cmd.Parameters.AddWithValue("@ticker_sym", desiredCurrency);
-                            object result = cmd.ExecuteNonQuery();
-                            Console.WriteLine("Currency Successfully Bought");
-                            Console.ReadKey();
-
-                        }
-                    }
-
-                    
-
-                    string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
-                    string action = "BUY";
-                    using (MySqlCommand cmd = new MySqlCommand(selectQuery, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@user_Id", user_id);
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            string email = User.email;
-                            if (!reader.HasRows)
+                            query = "UPDATE holdings SET quantity = quantity + @amount WHERE user_id = @user_id AND asset_id = @asset_id";
+                            using (MySqlCommand cmd = new MySqlCommand(query, connection))
                             {
-                                Console.WriteLine("No records found.");
-                                return;
-                            } else
-                            {
-                                while (reader.Read())
-                                {
-                                    int id = reader.GetInt32("id");
-                                    email = reader.GetString("email");
-                                    float balance = reader.GetFloat("balance");
-                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.mainCurrencySymbol, desiredCurrency , action);
-                                    Console.WriteLine("Saved To History");
-                                    
-                                }
+                                cmd.Parameters.AddWithValue("@user_id", user_id);
+                                cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                                cmd.Parameters.AddWithValue("@amount", calculatedAmount);
+                                object result = cmd.ExecuteNonQuery();
+                                Console.WriteLine("Asset Successfully Bought");
                                 Console.ReadKey();
-                                UpdateBalance(email, amount, action);
 
                             }
-                            
+
                         }
-                           
-                        
+
+                        else
+                        {
+                            query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
+                            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                            {
+                                cmd.Parameters.AddWithValue("@user_id", user_id);
+                                cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                                cmd.Parameters.AddWithValue("@quantity", calculatedAmount);
+                                cmd.Parameters.AddWithValue("@ticker_sym", desiredCurrency);
+                                object result = cmd.ExecuteNonQuery();
+                                Console.WriteLine("Currency Successfully Bought");
+                                Console.ReadKey();
+
+                            }
+                        }
+
+
+
+                        string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
+                        string action = "BUY";
+                        using (MySqlCommand cmd = new MySqlCommand(selectQuery, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@user_Id", user_id);
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                string email = User.email;
+                                if (!reader.HasRows)
+                                {
+                                    Console.WriteLine("No records found.");
+                                    return;
+                                }
+                                else
+                                {
+                                    while (reader.Read())
+                                    {
+                                        int id = reader.GetInt32("id");
+                                        email = reader.GetString("email");
+                                        float balance = reader.GetFloat("balance");
+                                        Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.mainCurrencySymbol, desiredCurrency, action);
+                                        Console.WriteLine("Saved To History");
+
+                                    }
+                                    Console.ReadKey();
+                                    UpdateBalance(email, amount, action);
+
+                                }
+
+                            }
+
+
+
+                        }
 
                     }
-                
+                    Console.WriteLine($"Successfully Bought The {desiredCurrency}");
                 }
-                Console.WriteLine($"Successfully Bought The {desiredCurrency}");
-            }
-            catch (Exception e)
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error " + e.Message);
+                    Console.ReadKey();
+                }
+            } else
             {
-                Console.WriteLine("Error " + e.Message);
-                Console.ReadKey();
+                Console.WriteLine("Cancelled");
+                ManageAsset.ManageAssetDashboard();
             }
+           
             
         }
 
@@ -548,78 +560,87 @@ namespace Activity
         public void SellCurrency(string sellingCurrency, string mainCurrency, float amount, int user_id, int asset_id)
         {
             
-            try
+            float calculatedAmount = amount * CurrencyManage.GetRate(sellingCurrency);
+            Console.WriteLine($@"
+You will Get {calculatedAmount} Worth of USDT
+Confirm? (y/n) ");
+            string confirm = Console.ReadLine();
+
+            if (confirm == "y" || confirm == "Y")
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
-                    string query = "UPDATE holdings SET quantity = quantity - @amount WHERE user_id = @user_id AND asset_id = @asset_id";
-
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
-                        cmd.Parameters.AddWithValue("@amount", amount);
-                        cmd.Parameters.AddWithValue("@user_id", user_id);
-                        cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                        conn.Open();
+                        string query = "UPDATE holdings SET quantity = quantity - @amount WHERE user_id = @user_id AND asset_id = @asset_id";
 
-                        object result = cmd.ExecuteNonQuery();
-
-
-
-                        if (result == null)
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
                         {
-                            return;
-                        }
-                        
+                            cmd.Parameters.AddWithValue("@amount", calculatedAmount);
+                            cmd.Parameters.AddWithValue("@user_id", user_id);
+                            cmd.Parameters.AddWithValue("@asset_id", asset_id);
+
+                            object result = cmd.ExecuteNonQuery();
 
 
-                        Console.WriteLine("Asset Sold Successfully!");
-                        Console.ReadKey();
-                    }
 
-                    string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
-                    string action = "SELL";
-                    using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@user_Id", user_id);
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            string email = User.email;
-                            if (!reader.HasRows)
+                            if (result == null)
                             {
-                                Console.WriteLine("No records found.");
                                 return;
                             }
-                            else
-                            {
-                                while (reader.Read())
-                                {
-                                    int id = reader.GetInt32("id");
-                                    email = reader.GetString("email");
-                                    float balance = reader.GetFloat("balance");
-                                    Midterm.DisplayHistory.InsertToHistory(email, amount, balance, sellingCurrency, mainCurrency, action);
-                                    Console.WriteLine("Saved To History");
 
-                                }
-                                Console.ReadKey();
-                               UpdateBalance(email, amount, action);
 
-                            }
 
+                            Console.WriteLine("Asset Sold Successfully!");
+                            Console.ReadKey();
                         }
 
+                        string selectQuery = "SELECT id, email, balance from users WHERE id = @user_id";
+                        string action = "SELL";
+                        using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@user_Id", user_id);
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                string email = User.email;
+                                if (!reader.HasRows)
+                                {
+                                    Console.WriteLine("No records found.");
+                                    return;
+                                }
+                                else
+                                {
+                                    while (reader.Read())
+                                    {
+                                        int id = reader.GetInt32("id");
+                                        email = reader.GetString("email");
+                                        float balance = reader.GetFloat("balance");
+                                        Midterm.DisplayHistory.InsertToHistory(email, amount, balance, sellingCurrency, mainCurrency, action);
+                                        Console.WriteLine("Saved To History");
 
-
+                                    }
+                                    Console.ReadKey();
+                                    UpdateBalance(email, calculatedAmount, action);
+                                }
+                            }
+                        }
                     }
-
                 }
-
-
-            }
-            catch (Exception e)
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error " + e.Message);
+                    Console.ReadKey();
+                }
+            } else
             {
-                Console.WriteLine("Error " + e.Message);
-                Console.ReadKey();
+                Console.WriteLine("Cancelled...");
             }
+
+
+
+
+                
 
         }
 

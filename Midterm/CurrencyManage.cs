@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Activity;
 using Midterm;
+using MySql.Data.MySqlClient;
 using Console = Colorful.Console;
 
 
@@ -29,6 +30,43 @@ namespace Midterm
         }
         
 
+
+        public static float GetRate(string ticker_symbol)
+        {
+            
+            float rate = 0;
+            try
+            {
+                using (MySqlConnection conns = new MySqlConnection(conn.GetConnectionString()))
+                {
+                    conns.Open();
+
+                    string query = "SELECT rate from assets WHERE ticker_symbol = @ticker_symbol";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conns))
+                    {
+                        cmd.Parameters.AddWithValue("@ticker_symbol", ticker_symbol);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    rate = reader.GetFloat("rate");
+                                    Thread.Sleep(2000);
+                                    return rate;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error " + ex.Message);
+            }
+
+            return rate;
+        }
         public async Task Initialize()
         {
             await client.StartAsync();
@@ -92,7 +130,13 @@ namespace Midterm
                 Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
                 toCurrency = Console.ReadLine()?.ToUpper();
 
-                
+                Console.WriteLine(@$"
+
+The Price Of {toCurrency} is {GetRate(toCurrency)}
+
+Your Balance is {connect.GetBalance(User.email)}
+
+");
 
                 //check if the currency exists
                 if (conn.CheckCurrency(toCurrency))
@@ -131,6 +175,11 @@ namespace Midterm
             connect.DisplayCurrencies();
             Console.WriteLine("===================================", System.Drawing.Color.White);
 
+
+            Console.WriteLine(@$"
+                    Your Balance is {connect.GetBalance(User.email)}
+
+");
             while (true)
             {
                 Console.Write("Enter The CurrencyYou Want to Sell (e.g., BTC): ", System.Drawing.Color.Yellow);
