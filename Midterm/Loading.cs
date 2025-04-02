@@ -12,7 +12,7 @@ namespace Midterm
     {
         public static void ShowLoadingScreen()
         {
-            Console.Clear();
+            Console.Clear(); 
             string group = @"
 
 
@@ -29,7 +29,7 @@ namespace Midterm
             int consoleWidth = Console.WindowWidth;
             int textX = (consoleWidth - loadingText.Length) / 2;
 
-            Console.SetCursorPosition(textX, Console.WindowHeight / 2 - 1);
+            Console.SetCursorPosition(textX, Console.WindowHeight / 2 - 1 );
             Console.Write(loadingText, Color.Cyan);
 
             
@@ -43,7 +43,7 @@ namespace Midterm
                                            Leader: Balanguer, Charles Bernard
                                            Member: Gerente, Ralph Joed 
                                                    Luib, Mark Christian
-                                                   Cabarles, Knives Benidect
+                                                   Cabarles, Knives Benedict
                                                    Nicolas, Karylle
                                                    Reboltan, Marie Cris
                                                    Montebon, Reca Mae
@@ -54,10 +54,10 @@ namespace Midterm
             {
                 Console.SetCursorPosition(barX + 1 + i, Console.WindowHeight / 2 + 1);
                 Console.Write("█", Color.LimeGreen);
-                Thread.Sleep(50); 
+                Thread.Sleep(100); 
             }
             
-            Thread.Sleep(500);
+            
             Midterm.Home.MainHome();
         }
 
