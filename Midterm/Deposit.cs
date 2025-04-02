@@ -10,10 +10,9 @@ namespace Midterm
     class Deposit
     {
         
-        public static void InsertMoney()
+        public static void InsertMoney(string email)
         {
             Connection connection = new Connection();
-            string email = "charles.bernard.balaguer@student.pnm.edu.ph";
             if (!Midterm.User.isLoggedIn)
             {
 

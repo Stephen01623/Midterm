@@ -7,6 +7,7 @@ using System.Drawing;
 using Console = Colorful.Console;
 using Midterm;
 using System.Text.RegularExpressions;
+using System.Numerics;
 namespace Activity
 {
     class Connection
@@ -122,7 +123,7 @@ namespace Activity
 
 
         }
-        public void InsertBalance(float balance, string email)
+        public void InsertBalance(float moneyToInsert, string email)
         {
 
             try
@@ -130,14 +131,12 @@ namespace Activity
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                   
-                    string query = "UPDATE users SET balance = balance + @balance WHERE Email = @email";
+                    string query = "UPDATE users SET balance = balance + @moneyToInsert WHERE Email = @email";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@balance", balance);
+                        cmd.Parameters.AddWithValue("@moneyToInsert", moneyToInsert);
                         cmd.Parameters.AddWithValue("@email", email);
-                        cmd.ExecuteNonQuery();
-
+                       object result=  cmd.ExecuteNonQuery();
                     } 
                 }
                 Console.WriteLine("Balance Deposited Successfully!");
@@ -156,28 +155,41 @@ namespace Activity
         public float GetBalance(string email)
         {
             float balance = 0;
-            email = "charles.bernard.balaguer@student.pnm.edu.ph";
+           
             string query = "SELECT balance FROM users WHERE email = @email";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    cmd.Parameters.AddWithValue("@email", email);
-                    object result = cmd.ExecuteScalar();
-
-                    if (result != null)
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        balance = Convert.ToInt32(result);
-                        return balance;
+                        cmd.Parameters.AddWithValue("@email", email);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null || result != DBNull.Value)
+                        {
+
+                            balance = Convert.ToInt32(result);
+                            Console.WriteLine(balance);
+                            
+                            return balance;
+                            
+                        } else
+                        {
+                            return 0;
+                        }
                     }
-                    
-                   
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+               
+            }
+            Console.ReadKey();
 
-            return 0;
+            return balance;
         }
 
 
@@ -255,20 +267,31 @@ namespace Activity
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "DELETE FROM favorites WHERE email = @Email AND favorite_currency = @Favorite";
-                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    //string query = "DELETE FROM favorites WHERE email = @Email AND favorite_currency = @Favorite";
+                    string selectQuery = "SELECT favorite_currency FROM favorites WHERE email = @email";
+                    using (MySqlCommand selectCmd = new MySqlCommand(selectQuery, connection))
                     {
-                        cmd.Parameters.AddWithValue("@Email", email);
-                        cmd.Parameters.AddWithValue("@Favorite", favorite);
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        selectCmd.Parameters.AddWithValue("@email", email);
+                        object result = selectCmd.ExecuteScalar();
 
-                        if (rowsAffected > 0)
+                        if (result != null && result != DBNull.Value)
                         {
-                            Console.WriteLine("Favorite Pair Removed Successfully!", Color.Green);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Pair Not Found in Favorites!", Color.Red);
+                            string storedValue = result.ToString();
+                            List<string> currencies = storedValue.Split(" - ").ToList();
+                            currencies.Remove(favorite.ToUpper());  
+
+                            string updatedValue = string.Join(" - ", currencies);
+
+                            // Update the record in the database
+                            string updateQuery = "UPDATE favorites SET favorite_currency = @updatedValue WHERE email = @email";
+                            using (MySqlCommand updateCmd = new MySqlCommand(updateQuery, connection))
+                            {
+                                updateCmd.Parameters.AddWithValue("@updatedValue", updatedValue);
+                                updateCmd.Parameters.AddWithValue("@email", email);
+                                updateCmd.ExecuteNonQuery();
+                                Console.WriteLine("Currency Successfully Deleted", Color.Red);
+                                Thread.Sleep(1000);
+                            }
                         }
                     }
                 }
@@ -301,7 +324,7 @@ namespace Activity
                             while (reader.Read())
                             {
 
-                                Console.WriteLine($@"{reader["asset_name"]} ({reader["ticker_symbol"]}) To {CurrencyManage.mainCurrency} ({CurrencyManage.mainCurrencySymbol})");
+                                Console.WriteLine($@"{reader["asset_name"]} ({reader["ticker_symbol"]}) To ({CurrencyManage.mainCurrencySymbol})");
 
                             }
                         }
@@ -343,7 +366,7 @@ namespace Activity
 
         public int GetUserId(string email)
         {
-            email = "charles.bernard.balaguer@student.pnm.edu.ph";
+           
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -480,7 +503,7 @@ namespace Activity
                         cmd.Parameters.AddWithValue("@user_Id", user_id);
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            string email = "charles.bernard.balaguer@student.pnm.edu.ph";
+                            string email = User.email;
                             if (!reader.HasRows)
                             {
                                 Console.WriteLine("No records found.");
@@ -492,10 +515,6 @@ namespace Activity
                                     int id = reader.GetInt32("id");
                                     email = reader.GetString("email");
                                     float balance = reader.GetFloat("balance");
-                                    Console.WriteLine(id);
-                                    Console.WriteLine(email);
-                                    Console.WriteLine(balance);
-
                                     Midterm.DisplayHistory.InsertToHistory(email, amount, balance, CurrencyManage.mainCurrencySymbol, desiredCurrency , action);
                                     Console.WriteLine("Saved To History");
                                     
@@ -564,7 +583,7 @@ namespace Activity
                         cmd.Parameters.AddWithValue("@user_Id", user_id);
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            string email = "charles.bernard.balaguer@student.pnm.edu.ph";
+                            string email = User.email;
                             if (!reader.HasRows)
                             {
                                 Console.WriteLine("No records found.");
@@ -577,10 +596,6 @@ namespace Activity
                                     int id = reader.GetInt32("id");
                                     email = reader.GetString("email");
                                     float balance = reader.GetFloat("balance");
-                                    Console.WriteLine(id);
-                                    Console.WriteLine(email);
-                                    Console.WriteLine(balance);
-
                                     Midterm.DisplayHistory.InsertToHistory(email, amount, balance, sellingCurrency, mainCurrency, action);
                                     Console.WriteLine("Saved To History");
 

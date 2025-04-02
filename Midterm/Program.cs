@@ -13,8 +13,8 @@ namespace Midterm
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
-            //ExchangerRateDashboard.ExchangeDashboard();
-            Midterm.updateuser.Changepassword();
+            ExchangerRateDashboard.ExchangeDashboard();
+            //Midterm.updateuser.Changepassword();
 
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();

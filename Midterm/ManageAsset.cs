@@ -14,12 +14,14 @@ namespace Midterm
     {
        
         public static int selectedIndex = 0;
-        
         public static float balance = 0;
+
+        
         public static async Task ManageAssetDashboard()
         {
-            //Connection connection = new Connection();
-            //balance = connection.GetBalance("charles.bernard.balaguer@student.pnm.edu.ph");
+    
+            Connection connection = new Connection();
+            balance = connection.GetBalance(User.email);
             while (true)
             {
                 Console.Clear();
@@ -132,7 +134,7 @@ namespace Midterm
                     break;
                 
             }
-            _= ManageAssetDashboard();
+             ManageAssetDashboard();
         }
        
     }

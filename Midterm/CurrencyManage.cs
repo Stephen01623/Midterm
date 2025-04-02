@@ -137,7 +137,6 @@ namespace Midterm
                 sellingFromCurrency = Console.ReadLine()?.ToUpper();
 
 
-
                 //check if the currency exists
                 if (conn.CheckCurrency(sellingFromCurrency))
                 {

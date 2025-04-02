@@ -17,6 +17,7 @@ namespace Midterm
             ExchangeDashboard();
         }
 
+
         public static int selectedIndex = 0;
         public async static Task ExchangeDashboard()
         {
@@ -49,7 +50,7 @@ namespace Midterm
 ▐                   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                      ▌
 ▐                                                                                                                     ▌
 ▐                                                                                                                     ▌
-▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌";
+▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌▌";
 
                 Console.WriteLine(banner, Color.LimeGreen);
                 string[] options = ["Spot", "Trade", "Deposit", "Add Favorites", "View Conversion History", "Change Password", "Logout"];
@@ -107,27 +108,26 @@ namespace Midterm
 
         public static async void ExecuteOption(int index)
         {
-            
-            BinanceWebSocketClient client = new BinanceWebSocketClient();
+           
             Console.Clear();
             switch (index)
             {
                 case 0:
-                    ExchangeCaller.Call();
+                    Midterm.ExchangeCaller.Call();
                     break;
                 case 1:
                     //ManageAsset manage = new ManageAsset();
                     Midterm.ManageAsset.ManageAssetDashboard();
                     break;
                 case 2:
-                    Midterm.Deposit.InsertMoney();
+                    Midterm.Deposit.InsertMoney(User.email);
                     break;
                 case 3:
                     Midterm.FavoritesManager.FavoritesMenu(User.email);
                     break;
                 case 4:
                     Midterm.DisplayHistory.DisplayConversions(User.email);
-                        break;
+                     break;
                 case 5:
                     Midterm.updateuser.Changepassword();
                     break;
@@ -141,7 +141,8 @@ namespace Midterm
 
             Console.WriteLine("\nPress any key to return to the menu...", Color.Red);
             Console.ReadKey();
-            await ExchangeDashboard();
+             
+            await ExchangeDashboard ();
 
         }
 
