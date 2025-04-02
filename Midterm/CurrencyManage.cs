@@ -13,6 +13,7 @@ namespace Midterm
     class CurrencyManage
     {
         public static float amount_converted;
+        public static float amount;
         public static string fromCurrency;
         public static string toCurrency;
         public static string mainCurrency = "TETHER";
@@ -27,14 +28,11 @@ namespace Midterm
         {
             client = new BinanceWebSocketClient();
             exchangeRates = new Dictionary<string, float>();
-        }
-        
-
-
+        }       
         public static float GetRate(string ticker_symbol)
         {
             
-            float rate = 0;
+            float price = 0;
             try
             {
                 using (MySqlConnection conns = new MySqlConnection(conn.GetConnectionString()))
@@ -51,9 +49,10 @@ namespace Midterm
                             {
                                 while (reader.Read())
                                 {
-                                    rate = reader.GetFloat("rate");
+                                    
+                                    price = reader.GetFloat("rate");
                                     Thread.Sleep(2000);
-                                    return rate;
+                                    return price;
                                 }
                             }
                         }
@@ -65,7 +64,7 @@ namespace Midterm
                 Console.WriteLine("Error " + ex.Message);
             }
 
-            return rate;
+            return price;
         }
         public async Task Initialize()
         {
@@ -129,8 +128,11 @@ namespace Midterm
             {
                 Console.Write("Enter the currency you want to Buy (e.g., BTC): ", System.Drawing.Color.Yellow);
                 toCurrency = Console.ReadLine()?.ToUpper();
+                //check if the currency exists
+                if (conn.CheckCurrency(toCurrency))
+                {
 
-                Console.WriteLine(@$"
+                    Console.WriteLine(@$"
 
 The Price Of {toCurrency} is {GetRate(toCurrency)}
 
@@ -138,10 +140,6 @@ Your Balance is {connect.GetBalance(User.email)}
 
 ");
 
-                //check if the currency exists
-                if (conn.CheckCurrency(toCurrency))
-                {
-                    
                     foreach (var pair in client.getPairs())
                     {
                         Console.WriteLine($"| {pair.ToUpper(),-10} | |");
@@ -150,7 +148,7 @@ Your Balance is {connect.GetBalance(User.email)}
                     {
                         Console.WriteLine(table.ToString());
                     }
-                    Console.Write("Enter the Amount you want to Buy: ", System.Drawing.Color.Yellow);
+                    Console.Write("Enter the Amount Of USDT: ", System.Drawing.Color.Yellow);
                     float amount = float.Parse(Console.ReadLine());
                    
                     conn.BuyingCurrency(toCurrency, amount, mainCurrencySymbol, conn.GetUserId(User.email), conn.GetAssetId(toCurrency));
@@ -184,17 +182,23 @@ Your Balance is {connect.GetBalance(User.email)}
             {
                 Console.Write("Enter The CurrencyYou Want to Sell (e.g., BTC): ", System.Drawing.Color.Yellow);
                 sellingFromCurrency = Console.ReadLine()?.ToUpper();
-
+                Connection con = new Connection();
 
                 //check if the currency exists
                 if (conn.CheckCurrency(sellingFromCurrency))
                 {
 
                     Console.Write("Enter the Amount you want to Sell: ", System.Drawing.Color.Yellow);
-                    float amount = float.Parse(Console.ReadLine());
-
-                    conn.SellCurrency(sellingFromCurrency, mainCurrencySymbol, amount, conn.GetUserId(User.email), conn.GetAssetId(sellingFromCurrency));
-                    break;
+                    amount = float.Parse(Console.ReadLine());
+                    if (CheckQuantity(con.GetUserId(User.email), con.GetAssetId(sellingFromCurrency)))
+                    {
+                        conn.SellCurrency(sellingFromCurrency, mainCurrencySymbol, amount, conn.GetUserId(User.email), conn.GetAssetId(sellingFromCurrency));
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine(@$"Insufficient {sellingFromCurrency}", System.Drawing.Color.Yellow);
+                    }
                 }
                 else
                 {
@@ -202,6 +206,46 @@ Your Balance is {connect.GetBalance(User.email)}
                 }
             }
         }
-        
+
+
+        public static bool CheckQuantity(int userId, int asset_id)
+        {
+            try
+            {
+                using (MySqlConnection conns = new MySqlConnection(conn.GetConnectionString()))
+                {
+                    conns.Open();
+                    string query = "SELECT quantity FROM holdings WHERE user_id = @user_id AND asset_id = @asset_id";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conns))
+                    {
+                        cmd.Parameters.AddWithValue("@user_id", userId);
+                        cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                float quantity = reader.GetFloat("quantity");
+                                Console.WriteLine(quantity);
+                                Thread.Sleep(2000);
+
+                                double epsilon = 1e-10;
+                                if (Math.Abs(quantity) > epsilon && amount <= quantity)
+                                {
+                                    Console.WriteLine("Performed");
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            return false;
+        }
+
     }
 }

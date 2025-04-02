@@ -486,6 +486,8 @@ Confirm? (y/n) ");
                         else
                         {
                             query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
+
+                            
                             using (MySqlCommand cmd = new MySqlCommand(query, connection))
                             {
                                 cmd.Parameters.AddWithValue("@user_id", user_id);
