@@ -33,6 +33,10 @@ namespace Midterm
                 string newpassword = Console.ReadLine();
                 conn.UpdatePassword(email, newpassword);
                 Console.WriteLine("Change Password Succesfully");
+                Console.Beep(800, 200);
+                Console.Beep(600, 200);
+                Console.Beep(700, 200);
+                Console.Beep(500, 300);
                 Console.ReadKey();
 
 
@@ -42,6 +46,7 @@ namespace Midterm
             else
             {
                 Console.WriteLine("Invalid Email or Password");
+                Console.Beep(1000, 2000);
             }
 
         }

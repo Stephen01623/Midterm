@@ -56,8 +56,8 @@ namespace Midterm
                 Console.Write("█", Color.LimeGreen);
                 Thread.Sleep(100); 
             }
-            
-            
+            Console.Beep(1000, 2000);
+
             Midterm.Home.MainHome();
         }
 

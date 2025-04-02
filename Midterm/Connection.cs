@@ -729,6 +729,7 @@ Confirm? (y/n) ");
                                 }else
                                 {
                                     Console.WriteLine("Failed Updating Asset");
+                                    Console.Beep(1000, 2000);
                                 }
 
                             }

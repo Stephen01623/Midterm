@@ -10,16 +10,21 @@ namespace Midterm
         {
             Console.Title = "Multi-Currency Converter";
             //Midterm.Loading.ShowLoadingScreen();
-            BinanceWebSocketClient client = new BinanceWebSocketClient();
 
-            
+            CurrencyManage manage = new CurrencyManage();
+
+
+
+            //BinanceWebSocketClient client = new BinanceWebSocketClient();
+
+
             //ExchangerRateDashboard.ExchangeDashboard();
-            
 
-            await client.StartAsync();
-           
+
+            //await client.StartAsync();
+
             //Connection conn = new Connection();
-            //Midterm.ExchangerRateDashboard.EnterDashboard()
+            Midterm.ExchangerRateDashboard.EnterDashboard();
         }
     }
     }

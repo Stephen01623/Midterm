@@ -89,25 +89,21 @@ namespace Midterm
             toCurrency = Console.ReadLine()?.ToUpper();
 
             Console.Write($"Enter the amount of {fromCurrency} you want to swap: ", System.Drawing.Color.Yellow);
-            if (!float.TryParse(Console.ReadLine(), out float amount))
+            float amountOfCurrency = float.Parse(Console.ReadLine());
+            try
             {
-                Console.WriteLine(" Invalid amount entered.", System.Drawing.Color.Red);
-                return;
-            }
+                if (conn.CheckCurrency(fromCurrency))
+                {
+                   
+                    CalculateConversion(amountOfCurrency, fromCurrency, toCurrency, conn.GetUserId(User.email), conn.GetAssetId(toCurrency));
 
-            if (!exchangeRates.ContainsKey(fromCurrency) || !exchangeRates.ContainsKey(toCurrency))
+                }
+            }
+            catch(Exception e)
             {
-                Console.WriteLine(" One or both currencies are not available.", System.Drawing.Color.Red);
-                return;
+                Console.WriteLine("Error " + e.Message);
             }
-
-            float fromRate = exchangeRates[fromCurrency];
-            float toRate = exchangeRates[toCurrency];
-
-            float convertedAmount = (amount / fromRate) * toRate;
-
-            Console.WriteLine($"✅ Successfully swapped {amount} {fromCurrency} to {convertedAmount:F6} {toCurrency}", System.Drawing.Color.Green);
-            Console.WriteLine("===================================", System.Drawing.Color.White);
+            
             Console.WriteLine("Press any key to return to the menu...", System.Drawing.Color.Red);
             Console.ReadKey();
         }
@@ -158,6 +154,7 @@ Your Balance is {connect.GetBalance(User.email)}
                 else
                 {
                     Console.WriteLine("Currency Does not Exists.");
+                    Console.Beep(1000, 2000);
                 }
             }
 
@@ -204,6 +201,7 @@ Your Balance is {connect.GetBalance(User.email)}
                 else
                 {
                     Console.WriteLine("Currency Does not Exists.");
+                    Console.Beep(1000, 2000);
                 }
             }
         }
@@ -248,5 +246,42 @@ Your Balance is {connect.GetBalance(User.email)}
             return false;
         }
 
+        public static void CalculateConversion(float amount, string toConvert, string converted, int user_id, int asset_id)
+        {
+           
+            float rate1 = GetRate(toConvert);
+            float rate2 = GetRate(converted);
+            float calculatedAmount = (amount * rate1) / rate2;
+         
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(conn.GetConnectionString()))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO holdings (user_id, asset_id, quantity, ticker_sym) VALUES (@user_id, @asset_id, @quantity, @ticker_sym)";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@user_id", user_id);
+                        cmd.Parameters.AddWithValue("@asset_id", asset_id);
+                        cmd.Parameters.AddWithValue("@quantity", calculatedAmount);
+                        cmd.Parameters.AddWithValue("@ticker_sym", converted);
+                        Console.WriteLine("Currency Converted Successfully!");
+                        Object result = cmd.ExecuteNonQuery();
+
+                    }
+
+                }
+            }
+            catch (Exception e) 
+            {
+
+                Console.WriteLine("Error: " + e.Message);
+            }
+
+            
+            
+        }
     }
 }

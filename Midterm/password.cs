@@ -42,6 +42,7 @@ namespace Midterm
             {
                 Console.SetCursorPosition(1, 25);
                 Console.WriteLine("Password must be at least 8 characters long.");
+                Console.Beep(1000, 2000);
                 Console.ReadKey();
                 Midterm.Home.MainHome();
             }    
@@ -52,6 +53,7 @@ namespace Midterm
             {
                 Console.SetCursorPosition(1, 25);
                 Console.WriteLine("Password does not match.");
+                Console.Beep(1000, 2000);
                 Console.ReadKey();
                 Midterm.Home.MainHome();
             }
@@ -62,6 +64,7 @@ namespace Midterm
             {
                 Console.SetCursorPosition(1, 25);
                 Console.WriteLine("Invalid email address.");
+                Console.Beep(1000, 2000);
                 Console.ReadKey();
                 Midterm.Home.MainHome();
             }

@@ -61,6 +61,7 @@ namespace Midterm
             catch (Exception ex)
             {
                 Console.WriteLine("Error" + ex.Message);
+                Console.Beep(1000, 2000);
             }
             return true;
 
@@ -88,6 +89,7 @@ namespace Midterm
             catch (Exception e)
             {
                 Console.WriteLine("Error " + e.Message);
+                Console.Beep(1000, 2000);
             }
             return false;
         }

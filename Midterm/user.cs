@@ -18,7 +18,7 @@ namespace Midterm
         public static bool isLoggedIn = false;
         public static Connection con = new Connection();
         public static bool conn = false;
-        public static string email;
+        public static string email = "charlesbernard.balaguer.041504@gmail.com";
 
         public static void DrawBox(int x, int y, int width, int height)
         {
@@ -32,6 +32,7 @@ namespace Midterm
             Console.SetCursorPosition(x, y + height - 1);
             Console.Write("╚" + new string('═', width) + "╝");
         }
+        
 
         public static void Register()
         {
@@ -60,6 +61,7 @@ namespace Midterm
             {
                 Console.SetCursorPosition(startX + 5, startY + 4);
                 Console.Write("Email already exists!");
+                Console.Beep(1000, 2000);
                 return;
             }
 
@@ -98,13 +100,19 @@ namespace Midterm
                     con.InsertData(username, password, email, phone, address);
                     Console.SetCursorPosition(startX + 2, startY + 10);
                     Console.Write("Registered Successfully!");
-                    
+                    Console.Beep(800, 200);
+                    Console.Beep(600, 200);
+                    Console.Beep(700, 200);
+                    Console.Beep(500, 300);
+
+
                     conn = true;
                 }
                 else
                 {
                     Console.SetCursorPosition(startX + 2, startY + 8);
                     Console.Write("OTP Failed!");
+                    Console.Beep(1000, 2000);
                 }
             }
         }
@@ -144,6 +152,10 @@ namespace Midterm
                     Midterm.Sendemail.Thank(email);
                     Console.SetCursorPosition(startX + 5, startY + 6);
                     Console.Write("Login Successful!");
+                    Console.Beep(800, 200);
+                    Console.Beep(600, 200);
+                    Console.Beep(700, 200);
+                    Console.Beep(500, 300);
                     isLoggedIn = true;
                     ExchangerRateDashboard.ExchangeDashboard();
                 }
@@ -151,12 +163,14 @@ namespace Midterm
                 {
                     Console.SetCursorPosition(startX + 5, startY + 6);
                     Console.Write("OTP Failed!");
+                    Console.Beep(1000, 2000);
                 }
             }
             else
             {
                 Console.SetCursorPosition(startX + 5, startY + 6);
                 Console.Write("Login Failed!");
+                Console.Beep(1000, 2000);
             }
         }
 

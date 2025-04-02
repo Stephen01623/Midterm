@@ -51,6 +51,7 @@ namespace Midterm
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+                Console.Beep(1000, 2000);
 
             }
         }
@@ -65,39 +66,14 @@ namespace Midterm
                     Credentials = new NetworkCredential(senderEmail, senderPassword),
                     EnableSsl = true
                 };
+                string htmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "sendemail.html");
 
 
-                string htmlBody = @"
-                <html>
-                <head>
-                    <style>
-                        @keyframes highlight {
-                            0% { background-color: yellow; color: black; }
-                            100% { background-color: transparent; color: #007bff; }
-                        }
 
-                        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
-                        .email-container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-                        .header { text-align: center; font-size: 24px; font-weight: bold; color: #333; }
-                        .highlight { font-weight: bold; color: #007bff; animation: highlight 1.5s ease-in-out infinite alternate; padding: 4px; }
-                        .content { font-size: 16px; color: #555; padding-top: 10px; line-height: 1.6; }
-                        .footer { text-align: center; font-size: 12px; color: #777; padding-top: 10px; }
-                    </style>
-                </head>
-                <body>
-                    <div class='email-container'>
-                        <div class='header'>Hello, This is Exchange-Currency</div>
-                        <div class='content'>
-                            <p>You are now Login in<span class='highlight'>Multi-currency converter</span> here in our application we convert.</p>
-                            <p>money into different types of currency into your likings!</p>
-                            <p>We highly appreciate you for testing our application</p>
-                           
-                            
-                        </div>
-                        <div class='footer'>Thank you for your time! 🚀</div>
-                    </div>
-                </body>
-                </html>";
+                string htmlBody = File.ReadAllText(htmlFilePath);
+
+
+                
 
                 MailMessage mail = new MailMessage
                 {
@@ -117,7 +93,7 @@ namespace Midterm
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
-
+                Console.Beep(1000, 2000);
             }
         }
     }
