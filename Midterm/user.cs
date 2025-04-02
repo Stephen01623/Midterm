@@ -18,7 +18,7 @@ namespace Midterm
         public static bool isLoggedIn = false;
         public static Connection con = new Connection();
         public static bool conn = false;
-        public static string email = "mypetadoptionsystem@gmail.com";
+        public static string email;
 
         public static void DrawBox(int x, int y, int width, int height)
         {
@@ -53,7 +53,7 @@ namespace Midterm
             Console.SetCursorPosition(startX + 5, startY + 3);
             Console.Write("Enter your Email: ");
             Console.SetCursorPosition(startX + 23, startY + 3);
-            string email = Console.ReadLine();
+            email = Console.ReadLine();
             Midterm.Password.Gmail(email);
 
             if (con.UserExists(email))
@@ -126,7 +126,7 @@ namespace Midterm
 
             Console.SetCursorPosition(startX + 5, startY + 3);
             Console.Write("Enter your Email: ");
-            string email = Console.ReadLine();
+            email = Console.ReadLine();
             Midterm.Password.Gmail(email);
 
             Console.SetCursorPosition(startX + 5, startY + 4);

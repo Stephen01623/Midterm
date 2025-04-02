@@ -91,13 +91,13 @@ namespace Midterm
             Console.Write($"Enter the amount of {fromCurrency} you want to swap: ", System.Drawing.Color.Yellow);
             if (!float.TryParse(Console.ReadLine(), out float amount))
             {
-                Console.WriteLine("❌ Invalid amount entered.", System.Drawing.Color.Red);
+                Console.WriteLine(" Invalid amount entered.", System.Drawing.Color.Red);
                 return;
             }
 
             if (!exchangeRates.ContainsKey(fromCurrency) || !exchangeRates.ContainsKey(toCurrency))
             {
-                Console.WriteLine("❌ One or both currencies are not available.", System.Drawing.Color.Red);
+                Console.WriteLine(" One or both currencies are not available.", System.Drawing.Color.Red);
                 return;
             }
 

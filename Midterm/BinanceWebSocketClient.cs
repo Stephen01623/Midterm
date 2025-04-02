@@ -56,7 +56,7 @@ class BinanceWebSocketClient
 
     public async Task StartAsync()
     {
-
+        Console.WriteLine("Streaming to Binance Server...");
         try
         {
             bool exit = false;
@@ -105,7 +105,7 @@ class BinanceWebSocketClient
             {
                 Console.Write("Press Any Key: ");
                 Console.ReadKey();
-                await Midterm.ExchangerRateDashboard.ExchangeDashboard();
+                await Midterm.Home.MainHome();
             }
         }
         catch (Exception e)
@@ -137,21 +137,25 @@ class BinanceWebSocketClient
     public void DisplayPriceTable()
     {
         Console.Clear();
-        Console.WriteLine("Top 10 Most Traded Crytocurrency From Binance");
-        Console.WriteLine("=================================");
-        Console.WriteLine("| Pair      |    Price     |");
-        Console.WriteLine("|-----------|-------------|");
+        Console.WriteLine(@"
+
+                             Top 10 Most Traded Crytocurrency From Binance
+                                     ================================= 
+                                        | Pair      |    Price     |
+                                        |-----------|--------------|
+");
+
 
 
 
         foreach (var pair in pairs)
         {
 
-            Console.WriteLine($"| {pair.ToUpper(),-10} | {priceTable[pair.ToUpper()],10} |");
+            Console.WriteLine(@$"                                        | {pair.ToUpper(),-10} | {priceTable[pair.ToUpper()],10} |");
 
         }
 
 
-        Console.WriteLine("=================================");
+        Console.WriteLine(@"                                      =================================");
     }
 }

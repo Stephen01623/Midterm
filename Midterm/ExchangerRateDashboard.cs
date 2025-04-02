@@ -53,7 +53,7 @@ namespace Midterm
 ▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌▌";
 
                 Console.WriteLine(banner, Color.LimeGreen);
-                string[] options = ["Spot", "Trade", "Deposit", "Add Favorites", "View Conversion History", "Change Password", "Logout"];
+                string[] options = ["Trade", "Deposit", "Add Favorites", "View Conversion History", "Change Password", "Logout"];
                 int selectedIndex = 0;
 
 
@@ -112,26 +112,24 @@ namespace Midterm
             Console.Clear();
             switch (index)
             {
+                
                 case 0:
-                    Midterm.ExchangeCaller.Call();
-                    break;
-                case 1:
                     //ManageAsset manage = new ManageAsset();
                     Midterm.ManageAsset.ManageAssetDashboard();
                     break;
-                case 2:
+                case 1:
                     Midterm.Deposit.InsertMoney(User.email);
                     break;
-                case 3:
+                case 2:
                     Midterm.FavoritesManager.FavoritesMenu(User.email);
                     break;
-                case 4:
+                case 3:
                     Midterm.DisplayHistory.DisplayConversions(User.email);
                      break;
-                case 5:
+                case 4:
                     Midterm.updateuser.Changepassword();
                     break;
-                case 6:
+                case 5:
                     Midterm.User.Logout();
                     break;
                 

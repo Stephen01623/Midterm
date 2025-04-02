@@ -136,7 +136,15 @@ namespace Activity
                     {
                         cmd.Parameters.AddWithValue("@moneyToInsert", moneyToInsert);
                         cmd.Parameters.AddWithValue("@email", email);
-                       object result=  cmd.ExecuteNonQuery();
+                        object result=  cmd.ExecuteNonQuery();
+                        int rowsAffected = Convert.ToInt32(cmd.ExecuteNonQuery());
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine(rowsAffected);
+                        } else
+                        {
+                            Console.WriteLine("Hindi napasok");
+                        }
                     } 
                 }
                 Console.WriteLine("Balance Deposited Successfully!");
@@ -708,9 +716,6 @@ Confirm? (y/n) ");
                         {
                             string baseCurrency = match.Groups[1].Value.ToUpper();
                             string quoteCurrency = match.Groups[2].Value.ToUpper();
-
-                            Console.WriteLine($"Base: {baseCurrency} Quote: {quoteCurrency}");
-
                             string query = "UPDATE assets SET rate = @rate WHERE ticker_symbol = @ticker_symbol";
                             
                             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -720,13 +725,15 @@ Confirm? (y/n) ");
                                 int rowsAffected = cmd.ExecuteNonQuery();
                                 if (rowsAffected > 0)
                                 {
-                                    Console.WriteLine($"Currency {baseCurrency} Updated Successfully!");
+                                    
+                                }else
+                                {
+                                    Console.WriteLine("Failed Updating Asset");
                                 }
 
                             }
                         }
-                    }
-
+                    }Console.WriteLine(@"                   All The Currency Has Been Fetched...");
                     Console.ReadKey();
                  ExchangerRateDashboard.ExchangeDashboard();
                 }

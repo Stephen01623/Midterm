@@ -9,20 +9,17 @@ namespace Midterm
         static async Task Main()
         {
             Console.Title = "Multi-Currency Converter";
-            Midterm.Loading.ShowLoadingScreen();
-            //BinanceWebSocketClient client = new BinanceWebSocketClient();
+            //Midterm.Loading.ShowLoadingScreen();
+            BinanceWebSocketClient client = new BinanceWebSocketClient();
 
-            //Midterm.AddFavorites.AddFavoritePair();
+            
             //ExchangerRateDashboard.ExchangeDashboard();
-            //Midterm.updateuser.Changepassword();
+            
 
-            //await client.StartAsync();
-            //Midterm.updateuser.Changepassword();
-
-            Connection conn = new Connection();
-            Midterm.ExchangerRateDashboard.EnterDashboard();
-
-            conn.GetRating("BTC", 1000);
+            await client.StartAsync();
+           
+            //Connection conn = new Connection();
+            //Midterm.ExchangerRateDashboard.EnterDashboard()
         }
     }
     }

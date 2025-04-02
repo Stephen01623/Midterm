@@ -13,7 +13,7 @@ namespace Midterm
         public static void InsertMoney(string email)
         {
             Connection connection = new Connection();
-            if (!Midterm.User.isLoggedIn)
+            if (Midterm.User.isLoggedIn)
             {
 
                 Console.Write(@"
