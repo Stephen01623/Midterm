@@ -8,7 +8,7 @@ namespace Midterm
     {
         static async Task Main()
         {
-
+            Console.Title = "Multi-Currency Converter";
             Midterm.Loading.ShowLoadingScreen();
             //BinanceWebSocketClient client = new BinanceWebSocketClient();
 
