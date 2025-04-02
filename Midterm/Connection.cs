@@ -453,6 +453,8 @@ namespace Activity
         }
         public void BuyingCurrency(string desiredCurrency,  float amount, string currency_to_convert, int user_id, int asset_id)
         {
+            //rate = amount / the price
+            //amount = rate * the price
             float calculatedAmount = amount / CurrencyManage.GetRate(desiredCurrency);
             Console.WriteLine($@"
 You will Get {calculatedAmount} Worth of {desiredCurrency}
@@ -561,8 +563,15 @@ Confirm? (y/n) ");
         // method for increasing usdt balance
         public void SellCurrency(string sellingCurrency, string mainCurrency, float amount, int user_id, int asset_id)
         {
-            
-            float calculatedAmount = amount * CurrencyManage.GetRate(sellingCurrency);
+            Console.WriteLine(CurrencyManage.amount);
+            Console.ReadKey();
+
+            float calculatedAmount = (amount / CurrencyManage.GetRate(sellingCurrency)) * CurrencyManage.GetRate(sellingCurrency);
+            //float calculatedAmount = CurrencyManage.sellingAmount * (1 / CurrencyManage.GetRate(sellingCurrency));
+
+
+            Console.WriteLine("Calculated is " + calculatedAmount);
+            Console.ReadKey();
             Console.WriteLine($@"
 You will Get {calculatedAmount} Worth of USDT
 Confirm? (y/n) ");
@@ -728,6 +737,43 @@ Confirm? (y/n) ");
                 Console.WriteLine("Error " + e.Message);
                 Console.ReadKey();
             }
+        }
+
+        public float GetRating(string ticker, float amount)
+        {
+            float rating = 0;
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT rate FROM assets where ticker_symbol = @ticker";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ticker", ticker);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                           while (reader.Read())
+                            {
+
+                                float rateToCalculate = reader.GetFloat("rate");
+                                float calculated =  amount / rateToCalculate;
+                                Console.WriteLine(calculated);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                Console.ReadKey();
+            }
+
+            return rating;
         }
     }
 }

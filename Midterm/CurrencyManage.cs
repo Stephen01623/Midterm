@@ -14,6 +14,7 @@ namespace Midterm
     {
         public static float amount_converted;
         public static float amount;
+        public static float sellingAmount;
         public static string fromCurrency;
         public static string toCurrency;
         public static string mainCurrency = "TETHER";
@@ -180,7 +181,7 @@ Your Balance is {connect.GetBalance(User.email)}
 ");
             while (true)
             {
-                Console.Write("Enter The CurrencyYou Want to Sell (e.g., BTC): ", System.Drawing.Color.Yellow);
+                Console.Write("Enter The Currency You Want to Sell (e.g., BTC): ", System.Drawing.Color.Yellow);
                 sellingFromCurrency = Console.ReadLine()?.ToUpper();
                 Connection con = new Connection();
 
@@ -188,7 +189,7 @@ Your Balance is {connect.GetBalance(User.email)}
                 if (conn.CheckCurrency(sellingFromCurrency))
                 {
 
-                    Console.Write("Enter the Amount you want to Sell: ", System.Drawing.Color.Yellow);
+                    Console.Write("Enter the Amount of USDT You want to get: ", System.Drawing.Color.Yellow);
                     amount = float.Parse(Console.ReadLine());
                     if (CheckQuantity(con.GetUserId(User.email), con.GetAssetId(sellingFromCurrency)))
                     {

@@ -13,14 +13,16 @@ namespace Midterm
             BinanceWebSocketClient client = new BinanceWebSocketClient();
 
             //Midterm.AddFavorites.AddFavoritePair();
-            ExchangerRateDashboard.ExchangeDashboard();
+            //ExchangerRateDashboard.ExchangeDashboard();
             //Midterm.updateuser.Changepassword();
 
             //await client.StartAsync();
             //Midterm.updateuser.Changepassword();
 
-            //Connection conn = new Connection();
-            //Midterm.ExchangerRateDashboard.EnterDashboard();
+            Connection conn = new Connection();
+            Midterm.ExchangerRateDashboard.EnterDashboard();
+
+            conn.GetRating("BTC", 1000);
         }
     }
     }
